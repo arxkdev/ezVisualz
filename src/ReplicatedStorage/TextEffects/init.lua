@@ -58,7 +58,7 @@ function Effect:Destroy()
 		Object:Destroy();
 	end;
 
-	setmetatable(self, nil);
+	self = nil;
 end
 
 return table.freeze(Effect);
