@@ -1,6 +1,8 @@
-local Gradient = require(script.Parent.Gradient);
-local Stroke = require(script.Parent.Stroke);
-local Templates = script.Parent.GradientTemplates;
+local TextEffects = script.Parent.Parent;
+
+local Gradient = require(TextEffects.Gradient);
+local Stroke = require(TextEffects.Stroke);
+local Templates = require(TextEffects.GradientTemplates);
 
 return function(uiInstance: GuiObject, speed: number, size: number)
     local mainGradient = Gradient.new(uiInstance, Templates.Ghost.Color, Templates.Ghost.Transparency);
