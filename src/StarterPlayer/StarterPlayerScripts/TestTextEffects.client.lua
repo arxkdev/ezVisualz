@@ -1,3 +1,4 @@
+-- Test Push
 local TextEffects = require(game:GetService("ReplicatedStorage").TextEffects);
 local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui");
 local MainUI = PlayerGui:WaitForChild("MainUI");
