@@ -1,12 +1,12 @@
 local RunService = game:GetService("RunService");
 
 local Stroke = {};
-local Stroke_mt = {__index = Stroke};
+Stroke.__index = Stroke;
 
-function Stroke.new(UIInstance: GuiObject, size: number, color: Color3?, transparency: number?): typeof(Stroke.new)
+function Stroke.new(uiInstance: GuiObject, size: number, color: Color3?, transparency: number?): typeof(Stroke.new)
 	local self = {};
 
-	self.UIInstance = UIInstance;
+	self.UIInstance = uiInstance;
 	self.Instance = Instance.new("UIStroke");
 	self.Color = color or Color3.new(1, 1, 1);
 	self.ColorTarget = color or Color3.new(1, 1, 1);
@@ -22,12 +22,11 @@ function Stroke.new(UIInstance: GuiObject, size: number, color: Color3?, transpa
 	self.Connection = nil;
 	self.IsText = false;
 
-	if (UIInstance:IsA("TextLabel") or UIInstance:IsA("TextBox") or UIInstance:IsA("TextButton")) then
+	if (uiInstance:IsA("TextLabel") or uiInstance:IsA("TextBox") or uiInstance:IsA("TextButton")) then
 		self.IsText = true;
 	end;
 
 	self.Instance.Parent = self.UIInstance;
-	setmetatable(self, Stroke_mt);
 
 	self.Connection = RunService.RenderStepped:Connect(function(dt)
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
@@ -44,7 +43,7 @@ function Stroke.new(UIInstance: GuiObject, size: number, color: Color3?, transpa
 		self.Instance.Thickness = self.Size;
 	end);
 
-	return self;
+	return setmetatable(self, Stroke);
 end
 
 function Stroke:SetSize(size: number, acceleration: number)
@@ -80,8 +79,8 @@ end
 function Stroke:Destroy()
 	self.Connection:Disconnect();
 	self.Instance:Destroy();
-
-	self = nil;
+	self.Instance = nil;
+	setmetatable(self, nil);
 end
 
-return Stroke;
+return table.freeze(Stroke);

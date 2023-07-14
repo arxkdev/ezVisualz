@@ -17,8 +17,9 @@ local textEffect6 = TextEffects.new(mainUI.TextLabel6, "GoldStroke", 0.012, 3)
 local textEffect7 = TextEffects.new(mainUI.TextLabel7, "SilverStroke", 0.012, 3)
 local textEffect8 = TextEffects.new(mainUI.TextLabel8, "ChromeStroke", 0.004, 3)
 local textEffect9 = TextEffects.new(mainUI.TextLabel9, "Bubblegum", 0.008, 3)
+local textEffect10 = TextEffects.new(mainUI.TextLabel10, "OceanicStroke", 0.001, 2)
 
-task.delay(5, function()
-	print("bubblegum destroy");
-	textEffect9:Destroy();
-end)
+-- task.delay(5, function()
+-- 	print("bubblegum destroy");
+-- 	textEffect9:Destroy();
+-- end)

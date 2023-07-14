@@ -1,7 +1,7 @@
 local Presets = script.Presets;
 
 local Effect = {};
-local EffectMetatable = {__index = Effect};
+Effect.__index = Effect;
 
 local function ValidateIsPreset(effectType: string): boolean
 	for _, Preset in pairs(Presets:GetChildren()) do
@@ -12,41 +12,53 @@ local function ValidateIsPreset(effectType: string): boolean
 	return false;
 end
 
-function Effect.new(UIInstance: GuiObject, effectType: string, speed: number?, size: number?): typeof(Effect.new(nil, "", 0, 0))
-	assert(UIInstance, "UIInstance not provided");
-	assert(effectType, "effectType not provided");
+function Effect.new(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): typeof(Effect.new(nil, "", 0, 0))
+	assert(uiInstance, "UIInstance not provided");
+	assert(effectType, "EffectType not provided");
 	assert(ValidateIsPreset(effectType), "effectType is not a valid preset");
 
 	local self = {};
 
 	self.Diagnostic = "DIAGNOSTIC VALUE";
-	self.UIInstance = UIInstance;
+	self.UIInstance = uiInstance;
 	self.EffectObjects = {};
+	self.SavedObjects = {};
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
 
-	setmetatable(self, EffectMetatable);
+	-- Save all objects that are not UIGradient or UIStroke
+	for _, Object in pairs(uiInstance:GetChildren()) do
+		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
+			table.insert(self.SavedObjects, Object);
+			Object:Destroy();
+		end;
+	end;
+
 	local Preset = require(Presets:FindFirstChild(effectType));
-	local Objects = Preset(UIInstance, self.Speed, self.Size);
+	local Objects = Preset(uiInstance, self.Speed, self.Size);
 
 	for _, v in pairs(Objects) do
 		table.insert(self.EffectObjects, v);
 	end;
 
-	return self;
+	return setmetatable(self, Effect);
 end
 
 function Effect:Destroy()
-	if (self.EffectObjects) then
-		for _, v in pairs(self.EffectObjects) do
-			if (not v.Destroy) then
-				continue;
-			end;
-			v:Destroy();
-		end;
+	-- Add the saved objects back
+	for Index, Object in pairs(self.SavedObjects) do
+		Object:Clone().Parent = self.UIInstance;
+		self.SavedObjects[Index] = nil;
 	end;
 
-	self = nil;
+	for _, Object in pairs(self.EffectObjects) do
+		if (not Object.Destroy) then
+			continue;
+		end;
+		Object:Destroy();
+	end;
+
+	setmetatable(self, nil);
 end
 
-return Effect;
+return table.freeze(Effect);

@@ -56,12 +56,12 @@ local function evalNumberSequence(inputSequence: NumberSequenceKeypoints, time: 
 end
 
 local Gradient = {};
-local Gradient_mt = {__index = Gradient};
+Gradient.__index = Gradient;
 
-function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, transparencySequence: number | ColorSequence): typeof(Gradient.new)
+function Gradient.new(uiInstance: GuiObject, colorSequence: ColorSequence, transparencySequence: number | ColorSequence): typeof(Gradient.new)
 	local self = {};
 
-	self.UIInstance = UIInstance;
+	self.UIInstance = uiInstance;
 	self.Instance = Instance.new("UIGradient");
 
 	self.ColorSequenceTarget = colorSequence;
@@ -105,7 +105,7 @@ function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, trans
 
 	self.TransparencySequence = self.TransparencySequenceTarget;
 
-	if (UIInstance:IsA("TextLabel") or UIInstance:IsA("TextBox") or UIInstance:IsA("TextButton")) then
+	if (uiInstance:IsA("TextLabel") or uiInstance:IsA("TextBox") or uiInstance:IsA("TextButton")) then
 		self.IsText = true;
 	end;
 
@@ -129,7 +129,6 @@ function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, trans
 			self.Offset = self.Offset + (self.OffsetTarget - self.Offset) * self.OffsetAcceleration;
 		else
 			self.OffsetSpeed = self.OffsetSpeed + (self.OffsetSpeedTarget - self.OffsetSpeed) * self.OffsetAcceleration;
-
 			self.Offset += self.OffsetSpeed;
 		end;
 
@@ -137,7 +136,6 @@ function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, trans
 			self.TransparencyOffset = self.TransparencyOffset + (self.TransparencyOffsetTarget - self.TransparencyOffset) * self.TransparencyOffsetAcceleration;
 		else
 			self.TransparencyOffsetSpeed = self.TransparencyOffsetSpeed + (self.TransparencyOffsetSpeedTarget - self.TransparencyOffsetSpeed) * self.TransparencyOffsetAcceleration;
-
 			self.TransparencyOffset += self.TransparencyOffsetSpeed;
 		end;
 
@@ -145,7 +143,6 @@ function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, trans
 			self.Rotation = self.Rotation + (self.RotationTarget - self.Rotation) * self.RotationAcceleration;
 		else
 			self.RotationSpeed = self.RotationSpeed + (self.RotationSpeedTarget - self.RotationSpeed) * self.RotationAcceleration;
-
 			self.Rotation += self.RotationSpeed;
 		end;
 
@@ -155,8 +152,7 @@ function Gradient.new(UIInstance: GuiObject, colorSequence: ColorSequence, trans
 	end);
 
 	self.Instance.Parent = self.UIInstance;
-	setmetatable(self, Gradient_mt);
-	return self;
+	return setmetatable(self, Gradient);
 end
 
 function Gradient:SetColorSequence(sequence: ColorSequence, blendRate: number?): ColorSequence
@@ -387,8 +383,8 @@ end
 function Gradient:Destroy()
 	self.Connection:Disconnect();
 	self.Instance:Destroy();
-
-	self = nil;
+	self.Instance = nil;
+	setmetatable(self, nil);
 end
 
-return Gradient;
+return table.freeze(Gradient);
