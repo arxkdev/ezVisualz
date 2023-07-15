@@ -22,17 +22,17 @@ function Effect.new(uiInstance: GuiObject, effectType: string, speed: number?, s
 	self.Size = size or 1;
 
 	-- Save all objects that are UIGradient or UIStroke
-	for _, Object in pairs(uiInstance:GetChildren()) do
+	for _, Object in uiInstance:GetChildren() do
 		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 			table.insert(self.SavedObjects, Object);
-			Object:Destroy();
+			Object.Parent = nil
 		end;
 	end;
 
 	local Preset = require(Presets:FindFirstChild(effectType));
 	local Objects = Preset(uiInstance, self.Speed, self.Size);
 
-	for _, v in pairs(Objects) do
+	for _, v in Objects do
 		table.insert(self.EffectObjects, v);
 	end;
 
@@ -41,12 +41,13 @@ end
 
 function Effect:Destroy()
 	-- Add the saved objects back
-	for Index, Object in pairs(self.SavedObjects) do
-		Object:Clone().Parent = self.UIInstance;
-		self.SavedObjects[Index] = nil;
+	for Index, Object in self.SavedObjects do
+		Object.Parent = self.UIInstance;
 	end;
 
-	for _, Object in pairs(self.EffectObjects) do
+	table.clear(self.SavedObjects)
+
+	for _, Object in self.EffectObjects do
 		if (not Object.Destroy) then
 			continue;
 		end;

@@ -32,7 +32,7 @@ function Dropshadow.new(uiInstance: GuiObject, color: Color3, transparency: numb
 
 	self.Instance.Parent = self.UIInstance;
 
-	self.Connection = RunService.RenderStepped:Connect(function(dt)
+	self.Connection = RunService.Heartbeat:Connect(function(dt)
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;
