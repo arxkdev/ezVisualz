@@ -44,7 +44,6 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
 
-	-- Save all objects that are UIGradient or UIStroke
 	for _, Object in uiInstance:GetChildren() do
 		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 			table.insert(self.SavedObjects, Object);
@@ -59,11 +58,16 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 		table.insert(self.EffectObjects, v);
 	end;
 
+	self.Connection = uiInstance.AncestryChanged:Connect(function()
+		if (not uiInstance:IsDescendantOf(game)) then
+			self:Destroy();
+		end;
+	end);
+
 	return setmetatable(self, Effect);
 end
 
 function Effect:Destroy()
-	-- Add the saved objects back
 	for _, Object in self.SavedObjects do
 		Object.Parent = self.UIInstance;
 	end;
@@ -77,6 +81,7 @@ function Effect:Destroy()
 		Object:Destroy();
 	end;
 
+	self.Connection:Disconnect();
 	self = nil;
 end
 
