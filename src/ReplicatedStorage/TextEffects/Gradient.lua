@@ -311,12 +311,12 @@ function Gradient:EqualizeColorSequenceKeypoints()
 	local newkeypoints = {};
 
 	if (#keypointsA ~= #keypointsB) then
-		for i, v in pairs(keypointsA) do
+		for i, v in keypointsA do
 			local new = ColorSequenceKeypoint.new(v.Time, evalColorSequence(keypointsB, v.Time));
 			table.insert(newkeypoints, new);
 		end;
 	else
-		for _, v in pairs(keypointsA) do
+		for _, v in keypointsA do
 			local sample = evalColorSequence(keypointsB, v.Time);
 			local blend = sample:Lerp(v.Value, self.ColorSequenceBlendRate);
 			local new = ColorSequenceKeypoint.new(v.Time, blend);
@@ -333,12 +333,12 @@ function Gradient:EqualizeTransparencySequenceKeypoints()
 	local newkeypoints = {};
 
 	if (#keypointsA ~= #keypointsB) then
-		for i, v in pairs(keypointsA) do
+		for i, v in keypointsA do
 			local new = NumberSequenceKeypoint.new(v.Time, evalNumberSequence(keypointsB, v.Time));
 			table.insert(newkeypoints, new);
 		end;
 	else
-		for _, v in pairs(keypointsA) do
+		for _, v in keypointsA do
 			local sample = evalNumberSequence(keypointsB, v.Time);
 			local blend = sample:Lerp(v.Value, self.TransparencySequenceBlendRate);
 			local new = NumberSequenceKeypoint.new(v.Time, blend);
@@ -354,7 +354,7 @@ function Gradient:CalculateTrueColorSequence()
 	local lowestKeypointIndex = 5;
 	local lowestTime = 100;
 
-	for _, v in pairs(self.ColorSequence.Keypoints) do
+	for _, v in self.ColorSequence.Keypoints do
 		local newKeypoint = ColorSequenceKeypoint.new((v.Time + self.Offset) % 1, v.Value);
 		if (newKeypoint.Time <= lowestTime) then
 			temp[lowestKeypointIndex - 1] = newKeypoint;
@@ -366,7 +366,7 @@ function Gradient:CalculateTrueColorSequence()
 	end;
 
 	local keypoints = {};
-	for i,v in pairs(temp) do
+	for i,v in temp do
 		table.insert(keypoints, v);
 	end;
 
@@ -400,7 +400,7 @@ function Gradient:CalculateTrueTransparencySequence()
 	local lowestKeypointIndex = 100;
 	local lowestTime = 100;
 
-	for _, v in pairs(self.TransparencySequence.Keypoints) do
+	for _, v in self.TransparencySequence.Keypoints do
 		local newKeypoint = NumberSequenceKeypoint.new((v.Time + self.TransparencyOffset) % 1, v.Value);
 		if (newKeypoint.Time <= lowestTime) then
 			temp[lowestKeypointIndex - 1] = newKeypoint;
@@ -412,7 +412,7 @@ function Gradient:CalculateTrueTransparencySequence()
 	end;
 
 	local keypoints = {};
-	for i,v in pairs(temp) do
+	for i,v in temp do
 		table.insert(keypoints, v);
 	end;
 
