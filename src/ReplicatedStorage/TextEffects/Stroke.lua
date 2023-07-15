@@ -28,7 +28,7 @@ function Stroke.new(uiInstance: GuiObject, size: number, color: Color3?, transpa
 
 	self.Instance.Parent = self.UIInstance;
 
-	self.Connection = RunService.RenderStepped:Connect(function(dt)
+	self.Connection = RunService.Heartbeat:Connect(function(dt)
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;

@@ -3,13 +3,8 @@ local Presets = script.Presets;
 local Effect = {};
 Effect.__index = Effect;
 
-local function ValidateIsPreset(effectType: string): boolean
-	for _, Preset in pairs(Presets:GetChildren()) do
-		if (Preset.Name == effectType) then
-			return true;
-		end;
-	end;
-	return false;
+local function ValidateIsPreset(presetName: string): boolean
+	return Presets:FindFirstChild(presetName) ~= nil
 end
 
 function Effect.new(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): typeof(Effect.new(nil, "", 0, 0))
@@ -26,7 +21,7 @@ function Effect.new(uiInstance: GuiObject, effectType: string, speed: number?, s
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
 
-	-- Save all objects that are not UIGradient or UIStroke
+	-- Save all objects that are UIGradient or UIStroke
 	for _, Object in pairs(uiInstance:GetChildren()) do
 		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 			table.insert(self.SavedObjects, Object);

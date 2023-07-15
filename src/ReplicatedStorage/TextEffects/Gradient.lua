@@ -5,7 +5,7 @@ type NumberSequenceKeypoints = typeof(NumberSequence.new(0).Keypoints);
 
 local function evalColorSequence(inputSequence: ColorSequenceKeypoints, time: number)
 	local sequence = {};
-	time = time + 1;
+	time += 1;
 
 	for x = 0, 2 do
 		for i = 1, #inputSequence do
@@ -33,7 +33,7 @@ end
 
 local function evalNumberSequence(inputSequence: NumberSequenceKeypoints, time: number)
 	local sequence = {};
-	time = time + 1;
+	time += 1;
 
 	for x = 0, 2 do
 		for i = 1, #inputSequence do
@@ -109,7 +109,7 @@ function Gradient.new(uiInstance: GuiObject, colorSequence: ColorSequence, trans
 		self.IsText = true;
 	end;
 
-	self.Connection = RunService.RenderStepped:Connect(function(dt)
+	self.Connection = RunService.Heartbeat:Connect(function(dt)
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;
