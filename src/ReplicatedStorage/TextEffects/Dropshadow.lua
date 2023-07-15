@@ -14,7 +14,7 @@ function Dropshadow.new(uiInstance: GuiObject, color: Color3, transparency: numb
 	self.Transparency = transparency or 0;
 	self.TransparencyTarget = transparency or 0;
 	self.TransparencyAcceleration = 1;
-	self.Offset = offset or Vector2.new();
+	self.Offset = offset or Vector2.new(-4, 4);
 	self.OffsetTarget = offset or Vector2.new();
 	self.OffsetAcceleration = 1;
 	self.Connection = nil;
@@ -23,10 +23,10 @@ function Dropshadow.new(uiInstance: GuiObject, color: Color3, transparency: numb
 	self.Instance.Size = UDim2.new(1, 0, 1, 0);
 	self.Instance:ClearAllChildren();
 
-	self.Instance.TextColor3 = self.Color;
 	self.Instance.Position = UDim2.new(0, self.Offset.X, 0, self.Offset.Y);
 
 	if (uiInstance:IsA("TextLabel") or uiInstance:IsA("TextBox") or uiInstance:IsA("TextButton")) then
+		self.Instance.TextColor3 = self.Color;
 		self.IsText = true;
 	end;
 
@@ -42,12 +42,12 @@ function Dropshadow.new(uiInstance: GuiObject, color: Color3, transparency: numb
 		self.Offset = self.Offset:Lerp(self.OffsetTarget, self.OffsetAcceleration);
 		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration);
 
-		self.Instance.TextTransparency = self.Transparency;
-		self.Instance.TextColor3 = self.Color;
 		self.Instance.Position = UDim2.new(0, self.Offset.X, 0, self.Offset.Y);
 
 		if (self.IsText) then
 			self.Instance.Text = self.UIInstance.Text;
+			self.Instance.TextTransparency = self.Transparency;
+			self.Instance.TextColor3 = self.Color;
 		end;
 
 		self.Instance.ZIndex = self.UIInstance.ZIndex - 1;
