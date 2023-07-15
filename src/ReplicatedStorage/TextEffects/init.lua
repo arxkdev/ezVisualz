@@ -11,6 +11,11 @@ export type Effect<T...> = {
 };
 
 local Effect = {};
+Effect.Gradient = require(script.Gradient);
+Effect.Stroke = require(script.Stroke);
+Effect.Dropshadow = require(script.Dropshadow);
+Effect.Templates = require(script.GradientTemplates);
+
 Effect.__index = Effect;
 
 local function ValidateIsPreset(presetName: string): boolean

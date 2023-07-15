@@ -13,7 +13,33 @@ local Effect = TextEffects.new(Label, "RainbowStroke", 0.01, 6)
 Effect:Destroy()
 ```
 
-## Presets
+## How to use the Gradient class
+```lua
+local TextEffects = require(...)
+local Gradient = TextEffects.Gradient.new(instance, color, transparency);
+-- Then we can use the gradient to apply it to an object
+Gradient:SetOffsetSpeed(number)
+Gradient:SetTransparencyOffsetSpeed(number)
+Gradient:SetColor(color)
+Gradient:SetTransparencySequence(number or NumberSequence, acceleration)
+Gradient:SetRotation(number, acceleration)
+Gradient:SetRotationSpeed(number, acceleration)
+```
+
+## How to use the Stroke class
+```lua
+local TextEffects = require(...)
+local Stroke = TextEffects.Stroke.new(instance, size);
+-- Then we can use the stroke to apply it to an object
+local StrokeGradient = TextEffects.Gradient.new(Stroke.Instance, color, transparency);
+StrokeGradient:SetOffsetSpeed(number)
+StrokeGradient:SetTransparencyOffsetSpeed(number)
+StrokeGradient:SetTransparency(number, acceleration)
+StrokeGradient:SetSize(number, acceleration)
+StrokeGradient:SetColor(color, acceleration)
+```
+
+# Presets
 - RainbowStroke (Applies rainbow and stroke effect)
 - Rainbow (Applies rainbow effect)
 - Bubblegum (Applies bubblegum effect)
