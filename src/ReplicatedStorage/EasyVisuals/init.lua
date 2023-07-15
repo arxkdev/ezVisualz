@@ -19,7 +19,7 @@ Effect.Templates = require(script.GradientTemplates);
 Effect.__index = Effect;
 
 local function ValidateIsPreset(presetName: string): boolean
-	return Presets:FindFirstChild(presetName) ~= nil
+	return Presets:FindFirstChild(presetName) ~= nil;
 end
 
 function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): Effect<T...>
@@ -48,7 +48,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	for _, Object in uiInstance:GetChildren() do
 		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 			table.insert(self.SavedObjects, Object);
-			Object.Parent = nil
+			Object.Parent = nil;
 		end;
 	end;
 
@@ -64,7 +64,7 @@ end
 
 function Effect:Destroy()
 	-- Add the saved objects back
-	for Index, Object in self.SavedObjects do
+	for _, Object in self.SavedObjects do
 		Object.Parent = self.UIInstance;
 	end;
 
