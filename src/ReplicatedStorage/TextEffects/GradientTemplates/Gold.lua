@@ -1,4 +1,4 @@
-local function CreateGradient()
+return function()
     local Gradient = Instance.new("UIGradient");
     Gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.new(0.8352941274642944, 0.6823529601097107, 0.21960784494876862)),
@@ -12,5 +12,3 @@ local function CreateGradient()
     })
     return Gradient;
 end
-
-return CreateGradient();
