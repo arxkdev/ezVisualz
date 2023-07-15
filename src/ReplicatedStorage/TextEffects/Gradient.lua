@@ -106,13 +106,13 @@ end
 local Gradient = {};
 Gradient.__index = Gradient;
 
-function Gradient.new<T...>(uiInstance: GuiObject, colorSequence: ColorSequence, transparencySequence: number | ColorSequence): Gradient<T...>
+function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: ColorSequence, transparencySequence: number | NumberSequence): Gradient<T...>
 	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
 	assert(colorSequence, "ColorSequence not provided");
 	assert(transparencySequence, "TransparencySequence not provided")
 	assert(typeof(colorSequence) == "ColorSequence", "ColorSequence is not a ColorSequence");
-	assert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "ColorSequence", "TransparencySequence is not a number or ColorSequence");
+	assert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "NumberSequence", "TransparencySequence is not a number or NumberSequence");
 
 	local self = {};
 

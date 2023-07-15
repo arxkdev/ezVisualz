@@ -24,9 +24,9 @@ export type Dropshadow<T...> = {
 local Dropshadow = {};
 Dropshadow.__index = Dropshadow;
 
-function Dropshadow.new<T...>(uiInstance: GuiObject, color: Color3?, transparency: number?, offset: Vector2?): Dropshadow<T...>
+function Dropshadow.new<T...>(uiInstance: GuiObject | UIStroke, color: Color3?, transparency: number?, offset: Vector2?): Dropshadow<T...>
 	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
 	if (color) then
 		assert(typeof(color) == "Color3", "Color is not a Color3");
 	end;

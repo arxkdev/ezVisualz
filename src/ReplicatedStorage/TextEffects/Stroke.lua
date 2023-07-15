@@ -24,9 +24,9 @@ export type Stroke<T...> = {
 local Stroke = {};
 Stroke.__index = Stroke;
 
-function Stroke.new<T...>(uiInstance: GuiObject, size: number, color: Color3?, transparency: number?): Stroke<T...>
+function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color: Color3?, transparency: number?): Stroke<T...>
 	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
 	assert(size, "Size not provided");
 	assert(typeof(size) == "number", "Size is not a number");
 	if (color) then
