@@ -2,6 +2,54 @@ local RunService = game:GetService("RunService");
 
 type ColorSequenceKeypoints = typeof(ColorSequence.new(Color3.new().Keypoints));
 type NumberSequenceKeypoints = typeof(NumberSequence.new(0).Keypoints);
+export type Gradient<T...> = {
+	UIInstance: GuiObject,
+	Instance: UIGradient,
+	ColorSequence: ColorSequence,
+	ColorSequenceTarget: ColorSequence,
+	TrueColorSequence: ColorSequence?,
+	ColorSequenceBlendRate: number,
+
+	TransparencySequence: NumberSequence,
+	TransparencySequenceTarget: NumberSequence,
+	TrueTransparencySequence: NumberSequence?,
+	TransparencySequenceBlendRate: number,
+
+	Offset: number,
+	OffsetTarget: number?,
+	OffsetSpeed: number,
+	OffsetSpeedTarget: number,
+	OffsetAcceleration: number,
+
+	TransparencyOffset: number,
+	TransparencyOffsetTarget: number?,
+	TransparencyOffsetSpeed: number,
+	TransparencyOffsetSpeedTarget: number,
+	TransparencyOffsetAcceleration: number,
+
+	Rotation: number,
+	RotationTarget: number?,
+	RotationSpeed: number,
+	RotationSpeedTarget: number,
+	RotationAcceleration: number,
+
+	Connection: RBXScriptConnection,
+	IsText: boolean,
+
+	SetColorSequence: (self: Gradient<T...>, sequence: ColorSequence, blendRate: number?) -> ColorSequence,
+	SetOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
+	SetOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
+	SetRotation: (self: Gradient<T...>, rotation: number, acceleration: number?) -> nil,
+	SetRotationSpeed: (self: Gradient<T...>, rotation: number, acceleration: number?) -> nil,
+	SetTransparencyOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
+	SetTransparencyOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
+	SetTransparencySequence: (self: Gradient<T...>, transparency: number | NumberSequence, acceleration: number?) -> nil,
+	EqualizeColorSequenceKeypoints: (self: Gradient<T...>) -> nil,
+	EqualizeTransparencySequenceKeypoints: (self: Gradient<T...>) -> nil,
+	CalculateTrueColorSequence: (self: Gradient<T...>) -> ColorSequence,
+	CalculateTrueTransparencySequence: (self: Gradient<T...>) -> NumberSequence,
+	Destroy: (self: Gradient<T...>) -> nil,
+};
 
 local function evalColorSequence(inputSequence: ColorSequenceKeypoints, time: number)
 	local sequence = {};
@@ -58,7 +106,14 @@ end
 local Gradient = {};
 Gradient.__index = Gradient;
 
-function Gradient.new(uiInstance: GuiObject, colorSequence: ColorSequence, transparencySequence: number | ColorSequence): typeof(Gradient.new)
+function Gradient.new<T...>(uiInstance: GuiObject, colorSequence: ColorSequence, transparencySequence: number | ColorSequence): Gradient<T...>
+	assert(uiInstance, "UIInstance not provided");
+	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(colorSequence, "ColorSequence not provided");
+	assert(transparencySequence, "TransparencySequence not provided")
+	assert(typeof(colorSequence) == "ColorSequence", "ColorSequence is not a ColorSequence");
+	assert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "ColorSequence", "TransparencySequence is not a number or ColorSequence");
+
 	local self = {};
 
 	self.UIInstance = uiInstance;

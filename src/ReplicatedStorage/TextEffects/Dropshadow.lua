@@ -1,9 +1,42 @@
 local RunService = game:GetService("RunService");
 
+export type Dropshadow<T...> = {
+	UIInstance: GuiObject,
+	Instance: GuiObject,
+	Color: Color3,
+	ColorTarget: Color3,
+	ColorAcceleration: number,
+	Transparency: number,
+	TransparencyTarget: number,
+	TransparencyAcceleration: number,
+	Offset: Vector2,
+	OffsetTarget: Vector2,
+	OffsetAcceleration: number,
+	Connection: RBXScriptConnection,
+	IsText: boolean,
+
+	SetOffset: (self: Dropshadow<T...>, offset: Vector2, acceleration: number) -> nil,
+	SetTransparency: (self: Dropshadow<T...>, transparency: number, acceleration: number) -> nil,
+	SetColor: (self: Dropshadow<T...>, color: Color3, acceleration: number) -> nil,
+	Destroy: (self: Dropshadow<T...>) -> nil,
+};
+
 local Dropshadow = {};
 Dropshadow.__index = Dropshadow;
 
-function Dropshadow.new(uiInstance: GuiObject, color: Color3, transparency: number, offset: Vector2): typeof(Dropshadow.new)
+function Dropshadow.new<T...>(uiInstance: GuiObject, color: Color3?, transparency: number?, offset: Vector2?): Dropshadow<T...>
+	assert(uiInstance, "UIInstance not provided");
+	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	if (color) then
+		assert(typeof(color) == "Color3", "Color is not a Color3");
+	end;
+	if (transparency) then
+		assert(typeof(transparency) == "number", "Transparency is not a number");
+	end;
+	if (offset) then
+		assert(typeof(offset) == "Vector2", "Offset is not a Vector2");
+	end;
+
 	local self = {};
 
 	self.UIInstance = uiInstance;

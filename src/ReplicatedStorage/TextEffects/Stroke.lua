@@ -1,9 +1,41 @@
 local RunService = game:GetService("RunService");
 
+export type Stroke<T...> = {
+	UIInstance: GuiObject,
+	Instance: UIStroke,
+	Color: Color3,
+	ColorTarget: Color3,
+	ColorAcceleration: number,
+	Transparency: number,
+	TransparencyTarget: number,
+	TransparencyAcceleration: number,
+	Size: number,
+	SizeTarget: number,
+	SizeAcceleration: number,
+	Connection: RBXScriptConnection,
+	IsText: boolean,
+
+	SetSize: (self: Stroke<T...>, size: number, acceleration: number) -> nil,
+	SetTransparency: (self: Stroke<T...>, transparency: number, acceleration: number) -> nil,
+	SetColor: (self: Stroke<T...>, color: Color3, acceleration: number) -> nil,
+	Destroy: (self: Stroke<T...>) -> nil,
+};
+
 local Stroke = {};
 Stroke.__index = Stroke;
 
-function Stroke.new(uiInstance: GuiObject, size: number, color: Color3?, transparency: number?): typeof(Stroke.new)
+function Stroke.new<T...>(uiInstance: GuiObject, size: number, color: Color3?, transparency: number?): Stroke<T...>
+	assert(uiInstance, "UIInstance not provided");
+	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(size, "Size not provided");
+	assert(typeof(size) == "number", "Size is not a number");
+	if (color) then
+		assert(typeof(color) == "Color3", "Color is not a Color3");
+	end;
+	if (transparency) then
+		assert(typeof(transparency) == "number", "Transparency is not a number");
+	end;
+
 	local self = {};
 
 	self.UIInstance = uiInstance;

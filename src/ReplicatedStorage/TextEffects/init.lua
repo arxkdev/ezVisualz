@@ -1,5 +1,15 @@
 local Presets = script.Presets;
 
+export type Effect<T...> = {
+	UIInstance: GuiObject,
+	EffectObjects: { Instance },
+	SavedObjects: { Instance },
+	Speed: number,
+	Size: number,
+
+	Destroy: (self: Effect<T...>) -> nil,
+};
+
 local Effect = {};
 Effect.__index = Effect;
 
@@ -7,10 +17,18 @@ local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil
 end
 
-function Effect.new(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): typeof(Effect.new(nil, "", 0, 0))
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): Effect<T...>
 	assert(uiInstance, "UIInstance not provided");
 	assert(effectType, "EffectType not provided");
+	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	assert(typeof(effectType) == "string", "effectType is not a string");
 	assert(ValidateIsPreset(effectType), "effectType is not a valid preset");
+	if (speed) then
+		assert(typeof(speed) == "number", "speed is not a number");
+	end;
+	if (size) then
+		assert(typeof(size) == "number", "size is not a number");
+	end;
 
 	local self = {};
 
