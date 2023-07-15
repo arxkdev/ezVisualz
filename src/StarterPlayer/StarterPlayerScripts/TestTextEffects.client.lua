@@ -18,7 +18,7 @@ local textEffect9 = TextEffects.new(MainUI.TextLabel9, "Bubblegum", 0.008, 3);
 local textEffect10 = TextEffects.new(MainUI.TextLabel10, "OceanicStroke", 0.001, 2);
 local textEffect11 = TextEffects.new(MainUI.TextLabel11, "Zebra", 0.009, 3);
 
-task.delay(5, function()
-	print("bubblegum destroy");
-	textEffect9:Destroy();
-end)
+-- task.delay(5, function()
+-- 	print("bubblegum destroy");
+-- 	textEffect9:Destroy();
+-- end)
