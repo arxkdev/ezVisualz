@@ -1,6 +1,6 @@
 local RunService = game:GetService("RunService");
 
-type ColorSequenceKeypoints = typeof(ColorSequence.new(Color3.new().Keypoints));
+type ColorSequenceKeypoints = typeof(ColorSequence.new(Color3.new()).Keypoints);
 type NumberSequenceKeypoints = typeof(NumberSequence.new(0).Keypoints);
 export type Gradient<T...> = {
 	UIInstance: GuiObject,
