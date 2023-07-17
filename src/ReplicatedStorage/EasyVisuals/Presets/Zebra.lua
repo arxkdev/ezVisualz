@@ -1,17 +1,13 @@
-local TextEffects = script.Parent.Parent;
-
-local Gradient = require(TextEffects.Gradient);
-local Stroke = require(TextEffects.Stroke);
-local Templates = require(TextEffects.GradientTemplates);
+local TextEffects = require(script.Parent.Parent);
 
 return function(uiInstance: GuiObject, speed: number, size: number)
-    local mainGradient = Gradient.new(uiInstance, Templates.Zebra.Color, 0);
+    local mainGradient = TextEffects.Gradient.new(uiInstance, TextEffects.Templates.Zebra.Color, 0);
     mainGradient:SetOffsetSpeed(speed, 1);
     mainGradient:SetRotation(90, 1);
 
-    local mainStroke = Stroke.new(uiInstance, size);
+    local mainStroke = TextEffects.Stroke.new(uiInstance, size);
 
-    local strokeGradient = Gradient.new(mainStroke.Instance, Templates.Zebra.Color, 0);
+    local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Zebra.Color, 0);
     strokeGradient:SetOffset(0.5, 1);
     strokeGradient:SetRotation(90, 1);
 

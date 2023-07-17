@@ -1,12 +1,8 @@
-local TextEffects = script.Parent.Parent;
-
-local Gradient = require(TextEffects.Gradient);
-local Stroke = require(TextEffects.Stroke);
-local Templates = require(TextEffects.GradientTemplates);
+local TextEffects = require(script.Parent.Parent);
 
 return function(uiInstance: GuiObject, speed: number, size: number)
-    local mainStroke = Stroke.new(uiInstance, size);
-    local strokeGradient = Gradient.new(mainStroke.Instance, Templates.Rainbow.Color, 0);
+    local mainStroke = TextEffects.Stroke.new(uiInstance, size);
+    local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Rainbow.Color, 0);
     local Rotation = 0.5;
 
     task.spawn(function()

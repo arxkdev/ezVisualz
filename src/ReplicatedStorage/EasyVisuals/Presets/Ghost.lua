@@ -1,10 +1,7 @@
-local TextEffects = script.Parent.Parent;
-
-local Gradient = require(TextEffects.Gradient);
-local Templates = require(TextEffects.GradientTemplates);
+local TextEffects = require(script.Parent.Parent);
 
 return function(uiInstance: GuiObject, speed: number)
-    local mainGradient = Gradient.new(uiInstance, Templates.Ghost.Color, Templates.Ghost.Transparency);
+    local mainGradient = TextEffects.Gradient.new(uiInstance, TextEffects.Templates.Ghost.Color, TextEffects.Templates.Ghost.Transparency);
     mainGradient:SetOffsetSpeed(speed, 1);
     mainGradient:SetTransparencyOffsetSpeed(speed * 0.9, 1);
     return {mainGradient};
