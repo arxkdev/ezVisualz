@@ -5,7 +5,7 @@ local MainUI = PlayerGui:WaitForChild("MainUI");
 local effect = EasyVisuals.new(MainUI.Frame1, "Rainbow");
 local effect2 = EasyVisuals.new(MainUI.Frame2, "Lava");
 local effect3 = EasyVisuals.new(MainUI.Frame3, "Bubblegum");
-local outline = EasyVisuals.new(MainUI.Frame4, "RainbowOutline", 1, 4);
+local outline = EasyVisuals.new(MainUI.Frame4, "RainbowOutline", 1, 5);
 
 local textEffect = EasyVisuals.new(MainUI.Texts.TextLabel1, "RainbowStroke", 0.01, 6);
 local textEffect2 = EasyVisuals.new(MainUI.Texts.TextLabel2, "LavaStroke", 0.004, 5);
@@ -20,6 +20,8 @@ local textEffect10 = EasyVisuals.new(MainUI.Texts.TextLabel10, "OceanicStroke", 
 local textEffect11 = EasyVisuals.new(MainUI.Texts.TextLabel11, "Zebra", 0.009, 3);
 local textEffect12 = EasyVisuals.new(MainUI.Texts.TextLabel12, "DeathStroke", 0.002, 3);
 local textEffect13 = EasyVisuals.new(MainUI.Texts.TextLabel13, "IceStroke", 0.007, 5);
+local textEffect14 = EasyVisuals.new(MainUI.Texts.TextLabel14, "FireStroke", 0.007, 5);
+local textEffect15 = EasyVisuals.new(MainUI.Texts.TextLabel15, "Matrix", 0.009, 5);
 
 -- task.delay(5, function()
 -- 	print("bubblegum destroy");
