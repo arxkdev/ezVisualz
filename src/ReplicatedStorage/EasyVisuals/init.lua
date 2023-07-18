@@ -44,7 +44,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
 
-	if not ignoreSavingObjects then
+	if (not ignoreSavingObjects) then
 		for _, Object in uiInstance:GetChildren() do
 			if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 				table.insert(self.SavedObjects, Object);
