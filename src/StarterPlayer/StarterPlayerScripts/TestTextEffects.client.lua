@@ -4,8 +4,8 @@ local MainUI = PlayerGui:WaitForChild("MainUI");
 
 local effect = EasyVisuals.new(MainUI.Frame1, "Rainbow");
 local effect2 = EasyVisuals.new(MainUI.Frame2, "Lava");
-local effect3 = EasyVisuals.new(MainUI.Frame3, "Bubblegum");
-local outline = EasyVisuals.new(MainUI.Frame4, "RainbowOutline", 1, 5);
+local outline = EasyVisuals.new(MainUI.Frame3, "RainbowOutline", 1, 5);
+local outline2 = EasyVisuals.new(MainUI.Frame4, "GreenOutline", 1, 5);
 
 local textEffect = EasyVisuals.new(MainUI.Texts.TextLabel1, "RainbowStroke", 0.01, 6);
 local textEffect2 = EasyVisuals.new(MainUI.Texts.TextLabel2, "LavaStroke", 0.004, 5);

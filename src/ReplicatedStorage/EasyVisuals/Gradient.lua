@@ -103,6 +103,8 @@ local function evalNumberSequence(inputSequence: NumberSequenceKeypoints, time: 
 	end;
 end
 
+local MAX_COLORSEQUENCE_KEYPOINTS = 19;
+local MAX_NUMBERSEQUENCE_KEYPOINTS = 19;
 local Gradient = {};
 Gradient.__index = Gradient;
 
@@ -113,6 +115,10 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 	assert(transparencySequence, "TransparencySequence not provided")
 	assert(typeof(colorSequence) == "ColorSequence", "ColorSequence is not a ColorSequence");
 	assert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "NumberSequence", "TransparencySequence is not a number or NumberSequence");
+	assert(#colorSequence.Keypoints <= MAX_COLORSEQUENCE_KEYPOINTS, "ColorSequence has too many keypoints");
+	if (typeof(transparencySequence) == "NumberSequence") then
+		assert(#transparencySequence.Keypoints <= MAX_NUMBERSEQUENCE_KEYPOINTS, "TransparencySequence has too many keypoints");
+	end;
 
 	local self = {};
 
@@ -346,6 +352,7 @@ function Gradient:EqualizeTransparencySequenceKeypoints()
 		end;
 	end;
 
+	print(newkeypoints[1].Value, newkeypoints[2].Value, newkeypoints[3].Value, newkeypoints[4].Value, newkeypoints[5].Value)
 	self.TransparencySequence = NumberSequence.new(newkeypoints);
 end
 
@@ -397,11 +404,15 @@ function Gradient:CalculateTrueTransparencySequence()
 	end;
 
 	local temp = {};
-	local lowestKeypointIndex = 100;
-	local lowestTime = 100;
+	local lowestKeypointIndex = #self.TransparencySequence.Keypoints + 1;
+	local lowestTime = math.huge;
 
 	for _, v in self.TransparencySequence.Keypoints do
-		local newKeypoint = NumberSequenceKeypoint.new((v.Time + self.TransparencyOffset) % 1, v.Value);
+		local evaledTime = (v.Time + self.TransparencyOffset);
+		if (evaledTime > 1 or evaledTime < 0) then
+			evaledTime = evaledTime % 1;
+		end;
+		local newKeypoint = NumberSequenceKeypoint.new(evaledTime, v.Value);
 		if (newKeypoint.Time <= lowestTime) then
 			temp[lowestKeypointIndex - 1] = newKeypoint;
 			lowestKeypointIndex = lowestKeypointIndex - 1;
@@ -412,7 +423,7 @@ function Gradient:CalculateTrueTransparencySequence()
 	end;
 
 	local keypoints = {};
-	for i,v in temp do
+	for _, v in temp do
 		table.insert(keypoints, v);
 	end;
 
