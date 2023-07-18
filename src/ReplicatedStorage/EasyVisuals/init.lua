@@ -22,7 +22,7 @@ local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil;
 end
 
-function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?): Effect<T...>
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?): Effect<T...>
 	assert(uiInstance, "UIInstance not provided");
 	assert(effectType, "EffectType not provided");
 	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
@@ -44,10 +44,12 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
 
-	for _, Object in uiInstance:GetChildren() do
-		if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
-			table.insert(self.SavedObjects, Object);
-			Object.Parent = nil;
+	if (not ignoreSavingObjects) then
+		for _, Object in uiInstance:GetChildren() do
+			if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
+				table.insert(self.SavedObjects, Object);
+				Object.Parent = nil;
+			end;
 		end;
 	end;
 
