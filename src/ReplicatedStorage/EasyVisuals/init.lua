@@ -22,7 +22,7 @@ local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil;
 end
 
-function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?): Effect<T...>
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?): Effect<T...>
 	assert(uiInstance, "UIInstance not provided");
 	assert(effectType, "EffectType not provided");
 	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
@@ -54,7 +54,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	end;
 
 	local Preset = require(Presets:FindFirstChild(effectType));
-	local Objects = Preset(uiInstance, self.Speed, self.Size);
+	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency);
 
 	for _, v in Objects do
 		table.insert(self.EffectObjects, v);

@@ -22,6 +22,7 @@ local textEffect12 = EasyVisuals.new(MainUI.Texts.TextLabel12, "DeathStroke", 0.
 local textEffect13 = EasyVisuals.new(MainUI.Texts.TextLabel13, "IceStroke", 0.007, 5);
 local textEffect14 = EasyVisuals.new(MainUI.Texts.TextLabel14, "FireStroke", 0.007, 5);
 local textEffect15 = EasyVisuals.new(MainUI.Texts.TextLabel15, "Matrix", 0.009, 3);
+local textEffect16 = EasyVisuals.new(MainUI.Texts.TextLabel16, "Shine", 0.015, 3, false, Color3.fromRGB(187, 0, 255));
 
 -- task.delay(5, function()
 -- 	print("bubblegum destroy");

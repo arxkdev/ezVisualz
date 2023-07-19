@@ -66,7 +66,7 @@ local function evalColorSequence(inputSequence: ColorSequenceKeypoints, time: nu
 	for i = 1, #sequence - 1 do
 		local thisKeypoint = sequence[i];
 		local nextKeypoint = sequence[i + 1];
-		if time >= thisKeypoint.Time and time < nextKeypoint.Time then
+		if (time >= thisKeypoint.Time and time < nextKeypoint.Time) then
 			-- Calculate how far alpha lies between the points
 			local alpha = (time - thisKeypoint.Time) / (nextKeypoint.Time - thisKeypoint.Time);
 			-- Evaluate the real value between the points using alpha
