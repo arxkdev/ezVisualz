@@ -3,6 +3,7 @@ local RunService = game:GetService("RunService");
 export type Dropshadow<T...> = {
 	UIInstance: GuiObject,
 	Instance: GuiObject,
+	IsPaused: boolean,
 	Color: Color3,
 	ColorTarget: Color3,
 	ColorAcceleration: number,
@@ -15,6 +16,8 @@ export type Dropshadow<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
+	Pause: () -> nil,
+	Resume: () -> nil,
 	SetOffset: (self: Dropshadow<T...>, offset: Vector2, acceleration: number) -> nil,
 	SetTransparency: (self: Dropshadow<T...>, transparency: number, acceleration: number) -> nil,
 	SetColor: (self: Dropshadow<T...>, color: Color3, acceleration: number) -> nil,
@@ -41,6 +44,8 @@ function Dropshadow.new<T...>(uiInstance: GuiObject | UIStroke, color: Color3?, 
 
 	self.UIInstance = uiInstance;
 	self.Instance = uiInstance:Clone();
+	self.IsPaused = false;
+
 	self.Color = color or Color3.new();
 	self.ColorTarget = color or Color3.new();
 	self.ColorAcceleration = 1;
@@ -66,6 +71,10 @@ function Dropshadow.new<T...>(uiInstance: GuiObject | UIStroke, color: Color3?, 
 	self.Instance.Parent = self.UIInstance;
 
 	self.Connection = RunService.Heartbeat:Connect(function(dt)
+		if (self.IsPaused) then
+			return;
+		end;
+
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;
@@ -117,6 +126,14 @@ function Dropshadow:SetColor(color: Color3, acceleration: number)
 
 	self.ColorTarget = color;
 	self.ColorAcceleration = math.clamp(acceleration, 0, 1);
+end
+
+function Dropshadow:Pause()
+	self.IsPaused = true;
+end
+
+function Dropshadow:Resume()
+	self.IsPaused = false;
 end
 
 function Dropshadow:Destroy()

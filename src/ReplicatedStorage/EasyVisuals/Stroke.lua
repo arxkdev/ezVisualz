@@ -5,6 +5,7 @@ local RunService = game:GetService("RunService");
 export type Stroke<T...> = {
 	UIInstance: GuiObject,
 	Instance: UIStroke,
+	IsPaused: boolean,
 	Color: Color3,
 	ColorTarget: Color3,
 	ColorAcceleration: number,
@@ -17,6 +18,8 @@ export type Stroke<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
+	Pause: () -> nil,
+	Resume: () -> nil,
 	SetSize: (self: Stroke<T...>, size: number, acceleration: number) -> nil,
 	SetTransparency: (self: Stroke<T...>, transparency: number, acceleration: number) -> nil,
 	SetColor: (self: Stroke<T...>, color: Color3, acceleration: number) -> nil,
@@ -42,6 +45,8 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 
 	self.UIInstance = uiInstance;
 	self.Instance = Instance.new("UIStroke");
+	self.IsPaused = false;
+
 	self.Color = color or Color3.new(1, 1, 1);
 	self.ColorTarget = color or Color3.new(1, 1, 1);
 	self.ColorAcceleration = 1;
@@ -63,6 +68,10 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 	self.Instance.Parent = self.UIInstance;
 
 	self.Connection = RunService.Heartbeat:Connect(function(dt)
+		if (self.IsPaused) then
+			return;
+		end;
+
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;
@@ -108,6 +117,14 @@ function Stroke:SetColor(color: Color3, acceleration: number)
 
 	self.ColorTarget = color;
 	self.ColorAcceleration = math.clamp(acceleration, 0, 1);
+end
+
+function Stroke:Pause()
+	self.IsPaused = true;
+end
+
+function Stroke:Resume()
+	self.IsPaused = false;
 end
 
 function Stroke:Destroy()

@@ -5,6 +5,8 @@ type NumberSequenceKeypoints = typeof(NumberSequence.new(0).Keypoints);
 export type Gradient<T...> = {
 	UIInstance: GuiObject,
 	Instance: UIGradient,
+	IsPaused: boolean,
+
 	ColorSequence: ColorSequence,
 	ColorSequenceTarget: ColorSequence,
 	TrueColorSequence: ColorSequence?,
@@ -36,6 +38,8 @@ export type Gradient<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
+	Pause: () -> nil,
+	Resume: () -> nil,
 	SetColorSequence: (self: Gradient<T...>, sequence: ColorSequence, blendRate: number?) -> ColorSequence,
 	SetOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
 	SetOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
@@ -124,6 +128,7 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 
 	self.UIInstance = uiInstance;
 	self.Instance = Instance.new("UIGradient");
+	self.IsPaused = false;
 
 	self.ColorSequenceTarget = colorSequence;
 	self.ColorSequence = colorSequence;
@@ -171,6 +176,10 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 	end;
 
 	self.Connection = RunService.Heartbeat:Connect(function(dt)
+		if (self.IsPaused) then
+			return;
+		end;
+
 		if (not self.UIInstance or self.UIInstance.Parent == nil) then
 			self:Destroy();
 			return;
@@ -444,6 +453,14 @@ function Gradient:CalculateTrueTransparencySequence()
 
 	self.TrueTransparencySequence = NumberSequence.new(keypoints);
 	return self.TrueTransparencySequence;
+end
+
+function Gradient:Pause()
+	self.IsPaused = true;
+end
+
+function Gradient:Resume()
+	self.IsPaused = false;
 end
 
 function Gradient:Destroy()

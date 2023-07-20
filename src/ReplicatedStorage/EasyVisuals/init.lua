@@ -6,7 +6,10 @@ export type Effect<T...> = {
 	SavedObjects: { Instance },
 	Speed: number,
 	Size: number,
+	IsPaused: boolean,
 
+	Pause: () -> nil,
+	Resume: () -> nil,
 	Destroy: (self: Effect<T...>) -> nil,
 };
 
@@ -34,15 +37,46 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	if (size) then
 		assert(typeof(size) == "number", "size is not a number");
 	end;
+	if (customColor) then
+		assert(typeof(customColor) == "ColorSequence" or typeof(customColor) == "Color3", "customColor is not a ColorSequence or Color3");
+	end;
+	if (customTransparency) then
+		assert(typeof(customTransparency) == "NumberSequence" or typeof(customTransparency) == "number", "customTransparency is not a NumberSequence or number");
+	end;
 
 	local self = {};
 
+	self.IsPaused = false;
 	self.Diagnostic = "DIAGNOSTIC VALUE";
 	self.UIInstance = uiInstance;
 	self.EffectObjects = {};
 	self.SavedObjects = {};
+	self.Connections = {};
 	self.Speed = speed or 0.007;
 	self.Size = size or 1;
+
+	-- Climb up the parent tree of the UIInstance and attach GetPropertyChangedSignal to the Visible property of each object
+	-- If the Visible property changes to false, destroy the effect
+	local function RecursiveAncestryChanged(Object: Instance)
+		-- If the object is a PlayerGui, we've reached the top of the tree
+		if (Object:IsA("PlayerGui")) then
+			return;
+		end;
+
+		local IsVisibleOrEnabled = Object:IsA("GuiObject") and "Visible" or Object:IsA("ScreenGui") and "Enabled";
+
+		table.insert(self.Connections, Object:GetPropertyChangedSignal(IsVisibleOrEnabled):Connect(function()
+			self.IsPaused = not Object[IsVisibleOrEnabled];
+			if (self.IsPaused) then
+				self:Pause();
+			else
+				self:Resume();
+			end;
+		end));
+
+		RecursiveAncestryChanged(Object.Parent);
+	end;
+	RecursiveAncestryChanged(uiInstance);
 
 	if (not ignoreSavingObjects) then
 		for _, Object in uiInstance:GetChildren() do
@@ -69,12 +103,34 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	return setmetatable(self, Effect);
 end
 
+function Effect:Pause()
+	-- print("Effect paused");
+	for _, Object in self.EffectObjects do
+		if (Object.Pause) then
+			Object:Pause();
+		end;
+	end;
+end
+
+function Effect:Resume()
+	-- print("Effect resumed");
+	for _, Object in self.EffectObjects do
+		if (Object.Resume) then
+			Object:Resume();
+		end;
+	end;
+end
+
 function Effect:Destroy()
 	for _, Object in self.SavedObjects do
 		Object.Parent = self.UIInstance;
 	end;
+	for _, Connection in self.Connections do
+		Connection:Disconnect();
+	end;
 
-	table.clear(self.SavedObjects)
+	table.clear(self.SavedObjects);
+	table.clear(self.Connections);
 
 	for _, Object in self.EffectObjects do
 		if (not Object.Destroy) then
