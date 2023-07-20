@@ -21,6 +21,13 @@ Effect.Templates = require(script.GradientTemplates);
 
 Effect.__index = Effect;
 
+local VisibleOrEnabledChart = {
+	["GuiObject"] = "Visible",
+	["ScreenGui"] = "Enabled",
+	["BillboardGui"] = "Enabled",
+	["SurfaceGui"] = "Enabled",
+};
+
 local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil;
 end
@@ -58,12 +65,17 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	-- Climb up the parent tree of the UIInstance and attach GetPropertyChangedSignal to the Visible property of each object
 	-- If the Visible property changes to false, destroy the effect
 	local function RecursiveAncestryChanged(Object: Instance)
-		-- If the object is a PlayerGui, we've reached the top of the tree
-		if (Object:IsA("PlayerGui")) then
+		-- If the object is a PlayerGui or Workspace, stop climbing
+		if (Object:IsA("PlayerGui") or Object:IsA("Workspace")) then
 			return;
 		end;
 
-		local IsVisibleOrEnabled = Object:IsA("GuiObject") and "Visible" or Object:IsA("ScreenGui") and "Enabled";
+		-- If the object is a ScreenGui, BillboardGui, or SurfaceGui, check if it's enabled
+		local IsVisibleOrEnabled = VisibleOrEnabledChart[Object.ClassName];
+		if (not IsVisibleOrEnabled) then
+			RecursiveAncestryChanged(Object.Parent);
+			return;
+		end;
 
 		table.insert(self.Connections, Object:GetPropertyChangedSignal(IsVisibleOrEnabled):Connect(function()
 			self.IsPaused = not Object[IsVisibleOrEnabled];

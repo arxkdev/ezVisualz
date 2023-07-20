@@ -25,7 +25,15 @@ local textEffect15 = EasyVisuals.new(MainUI.Texts.TextLabel15, "Matrix", 0.009, 
 local textEffect16 = EasyVisuals.new(MainUI.Texts.TextLabel16, "Shine", 0.015, 3, false, Color3.fromRGB(187, 0, 255));
 local textEffect17 = EasyVisuals.new(MainUI.Texts.TextLabel17, "WaveStroke", 0.008, 6, false, Color3.fromRGB(0, 247, 255));
 
+local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardGui.TextLabel, "Matrix", 0.009, 3);
+
+
 -- task.delay(5, function()
 -- 	print("bubblegum destroy");
 -- 	textEffect9:Destroy();
+-- end)
+
+-- task.delay(5, function()
+-- 	print("bubblegum pause");
+-- 	textEffect9:Pause();
 -- end)
