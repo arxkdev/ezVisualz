@@ -1,5 +1,7 @@
 local RunService = game:GetService("RunService");
 
+-- Fingeroo was here ( ͡° ͜ʖ ͡°)
+
 export type Stroke<T...> = {
 	UIInstance: GuiObject,
 	Instance: UIStroke,
