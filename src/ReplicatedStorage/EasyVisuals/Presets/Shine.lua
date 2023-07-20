@@ -2,7 +2,7 @@ local TextEffects = require(script.Parent.Parent);
 
 -- Making colors lighter
 local function makeLighter(color: Color3, amount: number): Color3
-    return Color3.new(math.clamp(color.R + amount, 0, 1), math.clamp(color.G + amount, 0, 1), math.clamp(color.B + amount, 0, 1));
+    return color:Lerp(Color3.fromRGB(255, 255, 255), amount);
 end
 
 return function(uiInstance: GuiObject, speed: number, size: number, customColor: Color3)
