@@ -20,6 +20,7 @@ Effect.Dropshadow = require(script.Dropshadow);
 Effect.Templates = require(script.GradientTemplates);
 
 Effect.__index = Effect;
+Effect.CurrentEffects = {};
 
 local VisibleOrEnabledChart = {
 	["GuiObject"] = "Visible",
@@ -65,6 +66,10 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	-- Climb up the parent tree of the UIInstance and attach GetPropertyChangedSignal to the Visible property of each object
 	-- If the Visible property changes to false, destroy the effect
 	local function RecursiveAncestryChanged(Object: Instance)
+		if (not Object) then
+			return;
+		end;
+
 		-- If the object is a PlayerGui or Workspace, stop climbing
 		if (Object:IsA("PlayerGui") or Object:IsA("Workspace")) then
 			return;
