@@ -157,7 +157,6 @@ function Effect:Destroy()
 	end;
 
 	self.Connection:Disconnect();
-	self = nil;
 end
 
 return table.freeze(Effect);
