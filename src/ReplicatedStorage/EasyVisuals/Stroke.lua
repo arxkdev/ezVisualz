@@ -129,8 +129,10 @@ end
 
 function Stroke:Destroy()
 	self.Connection:Disconnect();
-	self.Instance:Destroy();
-	self.Instance = nil;
+	if (self.Instance) then
+		self.Instance:Destroy();
+		self.Instance = nil;
+	end;
 end
 
 return table.freeze(Stroke);

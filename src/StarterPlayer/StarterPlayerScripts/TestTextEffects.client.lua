@@ -30,18 +30,13 @@ local textEffect17 = EasyVisuals.new(MainUI.Texts.TextLabel17, "WaveStroke", 0.0
 
 local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardGui.TextLabel, "RainbowStroke", 0.01, 3);
 
--- task.delay(5, function()
--- 	print("bubblegum destroy");
--- 	textEffect9:Destroy();
--- end)
-
--- task.delay(5, function()
--- 	print("bubblegum pause");
--- 	textEffect9:Pause();
--- end)
-
 -- create billboard over head
+local textEffectsBillboard
 local function SetupNametag()
+    if (textEffectsBillboard) then
+        textEffectsBillboard:Destroy();
+    end
+
     local billboard = Instance.new("BillboardGui");
     billboard.Name = "BillboardGui";
     billboard.AlwaysOnTop = true;
@@ -61,7 +56,7 @@ local function SetupNametag()
     textLabel.FontFace = Font.new("rbxasset://fonts/families/Bangers.json");
     textLabel.Parent = billboard;
 
-    local textEffectBillboard = EasyVisuals.new(textLabel, "RainbowStroke", 0.01, 3);
+    textEffectsBillboard = EasyVisuals.new(textLabel, "RainbowStroke", 0.01, 3);
 end
 
 if (Player.Character) then
