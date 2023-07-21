@@ -140,7 +140,7 @@ function Dropshadow:Destroy()
 	self.Connection:Disconnect();
 	self.Instance:Destroy();
 	self.Instance = nil;
-	setmetatable(self, nil);
+	self = nil;
 end
 
 return table.freeze(Dropshadow);

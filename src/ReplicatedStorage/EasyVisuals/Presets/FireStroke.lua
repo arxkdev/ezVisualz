@@ -8,6 +8,10 @@ return function(uiInstance: GuiObject, speed: number, size: number)
     local Rotation = 0;
     task.spawn(function()
         while (true) do
+            if (not mainGradient.Instance or mainGradient.Instance.Parent == nil) then
+                break;
+            end;
+
             Rotation = Rotation + 1;
             mainGradient:SetRotation(Rotation, 1);
             task.wait();

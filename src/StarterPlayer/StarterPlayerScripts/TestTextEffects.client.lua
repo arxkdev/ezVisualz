@@ -1,5 +1,8 @@
+local Players = game:GetService("Players");
+
 local EasyVisuals = require(game:GetService("ReplicatedStorage").EasyVisuals);
-local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui");
+local Player = Players.LocalPlayer;
+local PlayerGui = Player:WaitForChild("PlayerGui");
 local MainUI = PlayerGui:WaitForChild("MainUI");
 
 local effect = EasyVisuals.new(MainUI.Frame1, "Rainbow");
@@ -36,3 +39,34 @@ local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardG
 -- 	print("bubblegum pause");
 -- 	textEffect9:Pause();
 -- end)
+
+-- create billboard over head
+local function SetupNametag()
+    local billboard = Instance.new("BillboardGui");
+    billboard.Name = "BillboardGui";
+    billboard.AlwaysOnTop = true;
+    billboard.Size = UDim2.new(0, 100, 0, 80);
+    billboard.StudsOffset = Vector3.new(0, 2, 0);
+    billboard.Parent = Player.Character:WaitForChild("Head");
+
+    local textLabel = Instance.new("TextLabel");
+    textLabel.Name = "TextLabel";
+    textLabel.Size = UDim2.new(1, 0, 1, 0);
+    textLabel.BackgroundTransparency = 1;
+    textLabel.Text = Player.Name;
+    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
+    textLabel.TextScaled = true;
+    textLabel.AnchorPoint = Vector2.new(0.5, 0.5);
+    textLabel.Position = UDim2.new(0.5, 0, 0.5, 0);
+    textLabel.FontFace = Font.new("rbxasset://fonts/families/Bangers.json");
+    textLabel.Parent = billboard;
+
+    local textEffectBillboard = EasyVisuals.new(textLabel, "RainbowStroke", 0.01, 3);
+end
+
+if (Player.Character) then
+    SetupNametag();
+end
+Player.CharacterAdded:Connect(function()
+    SetupNametag();
+end)
