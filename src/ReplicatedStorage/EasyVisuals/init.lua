@@ -57,7 +57,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	self.IsPaused = false;
 	self.Diagnostic = "DIAGNOSTIC VALUE";
 	self.UIInstance = uiInstance;
-	self.ResumesOnShown = resumesOnVisible or true;
+	self.ResumesOnShown = resumesOnVisible == nil and true or resumesOnVisible;
 	self.EffectObjects = {};
 	self.SavedObjects = {};
 	self.Connections = {};
