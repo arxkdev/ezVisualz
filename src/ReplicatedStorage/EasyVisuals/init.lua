@@ -33,7 +33,7 @@ local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil;
 end
 
-function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?): Effect<T...>
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?): Effect<T...>
 	assert(uiInstance, "UIInstance not provided");
 	assert(effectType, "EffectType not provided");
 	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
@@ -57,6 +57,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	self.IsPaused = false;
 	self.Diagnostic = "DIAGNOSTIC VALUE";
 	self.UIInstance = uiInstance;
+	self.ResumesOnShown = resumesOnVisible or true;
 	self.EffectObjects = {};
 	self.SavedObjects = {};
 	self.Connections = {};
@@ -87,7 +88,9 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 			if (self.IsPaused) then
 				self:Pause();
 			else
-				self:Resume();
+				if (self.ResumesOnShown) then
+					self:Resume();
+				end;
 			end;
 		end));
 
