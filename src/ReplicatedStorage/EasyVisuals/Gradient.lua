@@ -127,7 +127,7 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 	local self = {};
 
 	self.UIInstance = uiInstance;
-	self.Instance = uiInstance:FindFirstAncestorWhichIsA("UIGradient") or Instance.new("UIGradient");
+	self.Instance = uiInstance:FindFirstChildWhichIsA("UIGradient") or Instance.new("UIGradient");
 	self.IsPaused = false;
 
 	self.ColorSequenceTarget = colorSequence;

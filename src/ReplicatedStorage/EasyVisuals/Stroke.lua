@@ -44,7 +44,7 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 	local self = {};
 
 	self.UIInstance = uiInstance;
-	self.Instance = uiInstance:FindFirstAncestorWhichIsA("UIStroke") or Instance.new("UIStroke");
+	self.Instance = uiInstance:FindFirstChildWhichIsA("UIStroke") or Instance.new("UIStroke");
 	self.IsPaused = false;
 
 	self.Color = color or Color3.new(1, 1, 1);
