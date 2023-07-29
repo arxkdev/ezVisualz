@@ -1,4 +1,8 @@
-# ezVisualz
+<p align="center">
+  <img src="https://i.imgur.com/oZerwzB.png" alt="ezVisualz" />
+</p>
+
+---
 
 Quick example on how to use:
 ```lua
