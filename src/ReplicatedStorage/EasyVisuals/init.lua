@@ -110,9 +110,20 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	local Preset = require(Presets:FindFirstChild(effectType));
 	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency);
 
-	for _, v in Objects do
-		table.insert(self.EffectObjects, v);
-	end;
+	if (table.find(Objects, "Connections") and table.find(Objects, "Effects")) then
+		local ObjectEffects = Objects.Effects;
+		local ObjectConnections = Objects.Connections;
+		for _, v in ObjectEffects do
+			table.insert(self.EffectObjects, v);
+		end;
+		for _, v in ObjectConnections do
+			table.insert(self.Connections, v);
+		end;
+	else
+		for _, v in Objects do
+			table.insert(self.Connections, v);
+		end;
+	end
 
 	self.Connection = uiInstance.AncestryChanged:Connect(function()
 		if (not uiInstance:IsDescendantOf(game)) then

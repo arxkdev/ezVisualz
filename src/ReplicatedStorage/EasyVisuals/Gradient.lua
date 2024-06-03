@@ -198,22 +198,22 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 		if (self.OffsetTarget) then
 			self.Offset = self.Offset + (self.OffsetTarget - self.Offset) * self.OffsetAcceleration;
 		else
-			self.OffsetSpeed = self.OffsetSpeed + (self.OffsetSpeedTarget - self.OffsetSpeed) * self.OffsetAcceleration;
-			self.Offset += self.OffsetSpeed;
+			self.OffsetSpeed = self.OffsetSpeed + (self.OffsetSpeedTarget - self.OffsetSpeed) * self.OffsetAcceleration * dt;
+			self.Offset += self.OffsetSpeed * dt;
 		end;
 
 		if (self.TransparencyOffsetTarget) then
 			self.TransparencyOffset = self.TransparencyOffset + (self.TransparencyOffsetTarget - self.TransparencyOffset) * self.TransparencyOffsetAcceleration;
 		else
-			self.TransparencyOffsetSpeed = self.TransparencyOffsetSpeed + (self.TransparencyOffsetSpeedTarget - self.TransparencyOffsetSpeed) * self.TransparencyOffsetAcceleration;
-			self.TransparencyOffset += self.TransparencyOffsetSpeed;
+			self.TransparencyOffsetSpeed = self.TransparencyOffsetSpeed + (self.TransparencyOffsetSpeedTarget - self.TransparencyOffsetSpeed) * self.TransparencyOffsetAcceleration * dt;
+			self.TransparencyOffset += self.TransparencyOffsetSpeed * dt;
 		end;
 
 		if (self.RotationTarget) then
 			self.Rotation = self.Rotation + (self.RotationTarget - self.Rotation) * self.RotationAcceleration;
 		else
-			self.RotationSpeed = self.RotationSpeed + (self.RotationSpeedTarget - self.RotationSpeed) * self.RotationAcceleration;
-			self.Rotation += self.RotationSpeed;
+			self.RotationSpeed = self.RotationSpeed + (self.RotationSpeedTarget - self.RotationSpeed) * self.RotationAcceleration * dt;
+			self.Rotation += self.RotationSpeed * dt;
 		end;
 
 		self.Instance.Rotation = self.Rotation;

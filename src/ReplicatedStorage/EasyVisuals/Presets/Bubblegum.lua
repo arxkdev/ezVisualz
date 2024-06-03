@@ -1,3 +1,5 @@
+local RunService = game:GetService("RunService");
+
 local TextEffects = require(script.Parent.Parent);
 
 return function(uiInstance: GuiObject, speed: number, size: number)
@@ -8,19 +10,23 @@ return function(uiInstance: GuiObject, speed: number, size: number)
     local mainStroke = TextEffects.Stroke.new(uiInstance, size);
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Bubblegum.Color, 0);
     strokeGradient:SetRotation(-45, 1);
-    strokeGradient:SetOffsetSpeed(speed * 0.9, 1);
+	strokeGradient:SetOffsetSpeed(speed * 0.9, 1);
 
-    task.spawn(function()
-        while (true) do
-            if (not mainStroke.Instance or mainStroke.Instance.Parent == nil) then
-                break;
-            end;
-            mainStroke:SetSize(size * 3, 0.055);
-            task.wait(0.2);
-            mainStroke:SetSize(size, 0.055);
-            task.wait(0.2);
-        end;
-    end);
+	local Scale = size * 3;
+	local Connection;
+	Connection = RunService.Heartbeat:Connect(function()
+		if (not mainStroke.Instance or mainStroke.Instance.Parent == nil) then
+			Connection:Disconnect();
+			return;
+		end;
 
-    return {mainGradient, strokeGradient, mainStroke};
+		local t = tick() * speed;
+		local sizeMultiplier = 1 + Scale * math.sin(t);
+		mainStroke:SetSize(size * sizeMultiplier, 0.055);
+	end);
+
+	return {
+		Effects = { mainGradient, strokeGradient, mainStroke },
+		Connections = { Connection }
+	};
 end

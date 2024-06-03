@@ -77,9 +77,9 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 			return;
 		end;
 
-		self.Color = self.Color:Lerp(self.ColorTarget, self.ColorAcceleration);
-		self.Size = self.Size + ((self.SizeTarget - self.Size) * self.SizeAcceleration);
-		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration);
+		self.Color = self.Color:Lerp(self.ColorTarget, self.ColorAcceleration * dt);
+		self.Size = self.Size + ((self.SizeTarget - self.Size) * self.SizeAcceleration * dt);
+		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration * dt);
 
 		self.Instance.Transparency = self.Transparency;
 		self.Instance.Color = self.Color;
