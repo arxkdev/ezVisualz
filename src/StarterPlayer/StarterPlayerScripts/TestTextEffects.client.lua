@@ -9,6 +9,7 @@ local effect = EasyVisuals.new(MainUI.Frame1, "Rainbow", .35);
 local effect2 = EasyVisuals.new(MainUI.Frame2, "Lava", .35);
 local outline = EasyVisuals.new(MainUI.Frame3, "RainbowOutline", 75, 5);
 local outline2 = EasyVisuals.new(MainUI.Frame4, "GreenOutline", 75, 5); -- acelerator is much higher so needs to be higher speed
+local outline3 = EasyVisuals.new(MainUI.Frame5, "ShineOutline", 75, 5, false, Color3.fromRGB(78, 177, 238)); -- acelerator is much higher so needs to be higher speed
 
 local textEffect = EasyVisuals.new(MainUI.Texts.TextLabel1, "RainbowStroke", .5, 6);
 local textEffect2 = EasyVisuals.new(MainUI.Texts.TextLabel2, "LavaStroke", .35, 5);
