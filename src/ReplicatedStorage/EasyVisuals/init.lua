@@ -110,7 +110,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	local Preset = require(Presets:FindFirstChild(effectType));
 	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency);
 
-	if (table.find(Objects, "Connections") and table.find(Objects, "Effects")) then
+	if Objects["Connections"] and Objects["Effects"] then
 		local ObjectEffects = Objects.Effects;
 		local ObjectConnections = Objects.Connections;
 		for _, v in ObjectEffects do
