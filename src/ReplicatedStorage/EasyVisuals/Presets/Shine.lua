@@ -42,5 +42,7 @@ return function(uiInstance: GuiObject, speed: number, size: number, customColor:
     local mainGradient = TextEffects.Gradient.new(uiInstance, colorSequenceForShine, 0);
     mainGradient:SetOffsetSpeed(speed * 0.6, 1);
     mainGradient:SetRotation(60, 1);
-    return {mainGradient};
+    return {
+        Effects = { mainGradient }
+    };
 end

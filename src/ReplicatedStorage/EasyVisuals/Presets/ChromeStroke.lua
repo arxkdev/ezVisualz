@@ -9,5 +9,7 @@ return function(uiInstance: GuiObject, speed: number, size: number)
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Chrome.Color, 0);
     strokeGradient:SetRotation(-89, 1);
     strokeGradient:SetOffsetSpeed(speed * 0.58, 1);
-    return {mainGradient, strokeGradient, mainStroke};
+    return {
+        Effects = { mainGradient, strokeGradient, mainStroke }
+    };
 end

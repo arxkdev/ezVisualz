@@ -19,5 +19,7 @@ return function(uiInstance: GuiObject, speed: number, size: number, customColor:
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, colorSequence, transparencySequence);
     strokeGradient:SetOffsetSpeed(speed, 1);
     strokeGradient:SetTransparencyOffsetSpeed(speed * 0.9, 1);
-    return {strokeGradient, mainStroke};
+    return {
+        Effects = { strokeGradient, mainStroke }
+    };
 end

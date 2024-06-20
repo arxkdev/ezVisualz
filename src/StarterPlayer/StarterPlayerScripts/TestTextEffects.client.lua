@@ -31,6 +31,11 @@ local textEffect17 = EasyVisuals.new(MainUI.Texts.TextLabel17, "WaveStroke", .55
 
 local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardGui.TextLabel, "RainbowStroke", .4, 3);
 
+task.delay(5, function()
+    print("Pausing TextEffectBillboard!");
+    textEffectBillboard:Pause();
+end);
+
 -- create billboard over head
 local textEffectsBillboard
 local function SetupNametag()

@@ -15,5 +15,7 @@ return function(uiInstance: GuiObject, speed: number, size: number)
         strokeGradient:SetOffsetSpeed(speed, 1);
     end);
 
-    return {mainGradient, strokeGradient, mainStroke};
+    return {
+        Effects = { mainGradient, strokeGradient, mainStroke }
+    };
 end

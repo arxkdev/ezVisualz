@@ -9,5 +9,7 @@ return function(uiInstance: GuiObject, speed: number, size: number)
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Death.Color, 0);
     strokeGradient:SetOffsetSpeed(-speed - 0.001, 1);
     strokeGradient:SetRotation(-85, 1);
-    return {mainGradient, strokeGradient, mainStroke};
+    return {
+        Effects = { mainGradient, strokeGradient, mainStroke }
+    };
 end
