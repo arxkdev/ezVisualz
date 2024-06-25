@@ -8,10 +8,20 @@ Quick example on how to use:
 ```lua
 local TextEffects = require(...)
 
--- UI: GuiObject, PresetName: string, Time: number, Size: number
+-- uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?
+
+-- uiInstance: the object to apply the effect to
+-- effectType: the preset to apply
+-- speed: the speed of the effect
+-- size: the size of the effect
+-- saveInstanceObjects: you can keep your own strokes and gradients in your instance by setting this to true, this module will delete them but it will save them and reapply them if :Destroy() is called, default is false
+-- customColor: the color of the effect (if needed)
+-- customTransparency: the transparency of the effect (if needed)
+-- resumesOnVisible: Because of obvious reasons, when an effect is not being shown, it is paused. This boolean decides whether to resume the effect when the uiInstance is shown (if not provided, it will resume on visible)
+
 -- Initializing an effect on an object
 local Label = ...
-local Effect = TextEffects.new(Label, "RainbowStroke", 0.01, 6)
+local Effect = TextEffects.new(Label, "RainbowStroke", 0.3, 6)
 
 -- Destroying the Effect
 Effect:Destroy()
@@ -58,4 +68,5 @@ StrokeGradient:SetColor(color, acceleration)
 - Silver (Applies silver effect)
 - SilverStroke (Applies silver and stroke effect)
 - Zebra (Applies zebra effect)
+- ShineOutline (Applies a shine outline effect)
 - More to come...

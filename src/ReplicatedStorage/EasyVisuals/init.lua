@@ -8,8 +8,8 @@ export type Effect<T...> = {
 	Size: number,
 	IsPaused: boolean,
 
-	Pause: () -> nil,
-	Resume: () -> nil,
+	Pause: (self: Effect<T...>) -> nil,
+	Resume: (self: Effect<T...>) -> nil,
 	Destroy: (self: Effect<T...>) -> nil,
 };
 
@@ -33,7 +33,7 @@ local function ValidateIsPreset(presetName: string): boolean
 	return Presets:FindFirstChild(presetName) ~= nil;
 end
 
-function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, ignoreSavingObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?): Effect<T...>
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?): Effect<T...>
 	assert(uiInstance, "UIInstance not provided");
 	assert(effectType, "EffectType not provided");
 	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
@@ -98,7 +98,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	end;
 	RecursiveAncestryChanged(uiInstance);
 
-	if (not ignoreSavingObjects) then
+	if (saveInstanceObjects) then
 		for _, Object in uiInstance:GetChildren() do
 			if (Object:IsA("UIStroke") or Object:IsA("UIGradient")) then
 				table.insert(self.SavedObjects, Object);
