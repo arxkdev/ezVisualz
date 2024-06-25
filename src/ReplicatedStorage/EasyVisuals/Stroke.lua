@@ -18,8 +18,8 @@ export type Stroke<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
-	Pause: () -> nil,
-	Resume: () -> nil,
+	Pause: (self: Stroke<T...>) -> nil,
+	Resume: (self: Stroke<T...>) -> nil,
 	SetSize: (self: Stroke<T...>, size: number, acceleration: number) -> nil,
 	SetTransparency: (self: Stroke<T...>, transparency: number, acceleration: number) -> nil,
 	SetColor: (self: Stroke<T...>, color: Color3, acceleration: number) -> nil,

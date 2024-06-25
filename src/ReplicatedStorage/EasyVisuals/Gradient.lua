@@ -38,8 +38,8 @@ export type Gradient<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
-	Pause: () -> nil,
-	Resume: () -> nil,
+	Pause: (self: Gradient<T...>) -> nil,
+	Resume: (self: Gradient<T...>) -> nil,
 	SetColorSequence: (self: Gradient<T...>, sequence: ColorSequence, blendRate: number?) -> ColorSequence,
 	SetOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
 	SetOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,

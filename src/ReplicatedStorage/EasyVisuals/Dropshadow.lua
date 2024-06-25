@@ -16,8 +16,8 @@ export type Dropshadow<T...> = {
 	Connection: RBXScriptConnection,
 	IsText: boolean,
 
-	Pause: () -> nil,
-	Resume: () -> nil,
+	Pause: (self: Dropshadow<T...>) -> nil,
+	Resume: (self: Dropshadow<T...>) -> nil,
 	SetOffset: (self: Dropshadow<T...>, offset: Vector2, acceleration: number) -> nil,
 	SetTransparency: (self: Dropshadow<T...>, transparency: number, acceleration: number) -> nil,
 	SetColor: (self: Dropshadow<T...>, color: Color3, acceleration: number) -> nil,
