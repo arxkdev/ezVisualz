@@ -1,0 +1,8 @@
+[package]
+name = "arxkdev/ezvisualz"
+description = "ezVisualz is a powerful library designed to enhance the animation of UI elements using UIGradients. It provides a wide range of presets out of the box and offers an easy-to-use experience for creating captivating visual effects."
+version = "0.0.4"
+license = "MIT"
+authors = ["Arxk (https://github.com/arxkdev)"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
