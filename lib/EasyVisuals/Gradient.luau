@@ -371,7 +371,11 @@ function Gradient:CalculateTrueColorSequence()
 	local lowestTime = 100;
 
 	for _, v in self.ColorSequence.Keypoints do
-		local newKeypoint = ColorSequenceKeypoint.new((v.Time + self.Offset) % 1, v.Value);
+		local evaledTime = (v.Time + self.Offset);
+		if (evaledTime > 1 or evaledTime < 0) then
+			evaledTime = evaledTime % 1;
+		end;
+		local newKeypoint = ColorSequenceKeypoint.new(evaledTime, v.Value);
 		if (newKeypoint.Time <= lowestTime) then
 			temp[lowestKeypointIndex - 1] = newKeypoint;
 			lowestKeypointIndex = lowestKeypointIndex - 1;
