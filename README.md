@@ -6,7 +6,7 @@
 
 Quick example on how to use:
 ```lua
-local TextEffects = require(...)
+local EasyVisuals = require(path.to.EasyVisuals)
 
 -- uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?
 
@@ -20,8 +20,8 @@ local TextEffects = require(...)
 -- resumesOnVisible: Because of obvious reasons, when an effect is not being shown, it is paused. This boolean decides whether to resume the effect when the uiInstance is shown (if not provided, it will resume on visible)
 
 -- Initializing an effect on an object
-local Label = ...
-local Effect = TextEffects.new(Label, "RainbowStroke", 0.3, 6)
+local Label = workspace.Label
+local Effect = EasyVisuals.new(Label, "RainbowStroke", 0.3, 6)
 
 -- Destroying the Effect
 Effect:Destroy()
@@ -29,8 +29,8 @@ Effect:Destroy()
 
 ## How to use the Gradient class
 ```lua
-local TextEffects = require(...)
-local Gradient = TextEffects.Gradient.new(instance, color, transparency);
+local EasyVisuals = require(path.to.EasyVisuals)
+local Gradient = EasyVisuals.Gradient.new(instance, color, transparency);
 -- Then we can use the gradient to apply it to an object
 Gradient:SetOffsetSpeed(number)
 Gradient:SetTransparencyOffsetSpeed(number)
@@ -42,10 +42,10 @@ Gradient:SetRotationSpeed(number, acceleration)
 
 ## How to use the Stroke class
 ```lua
-local TextEffects = require(...)
-local Stroke = TextEffects.Stroke.new(instance, size);
+local EasyVisuals = require(path.to.EasyVisuals)
+local Stroke = EasyVisuals.Stroke.new(instance, size);
 -- Then we can use the stroke to apply it to an object
-local StrokeGradient = TextEffects.Gradient.new(Stroke.Instance, color, transparency);
+local StrokeGradient = EasyVisuals.Gradient.new(Stroke.Instance, color, transparency);
 StrokeGradient:SetOffsetSpeed(number)
 StrokeGradient:SetTransparencyOffsetSpeed(number)
 StrokeGradient:SetTransparency(number, acceleration)
@@ -69,4 +69,23 @@ StrokeGradient:SetColor(color, acceleration)
 - SilverStroke (Applies silver and stroke effect)
 - Zebra (Applies zebra effect)
 - ShineOutline (Applies a shine outline effect)
+- NeonStroke, GalaxyStroke, ElectricStroke, SunsetStroke
 - More to come...
+
+## Custom Presets and Templates
+
+You can add your own custom presets and templates without forking the module! Simply create your own `Presets` and `GradientTemplates` folders with ModuleScripts following the same structure as the built-in ones, then hook them up:
+
+```lua
+local EasyVisuals = require(path.to.EasyVisuals)
+
+-- Hook up your custom folders (custom presets/templates override defaults with the same name)
+EasyVisuals.SetCustomFolders(YourPresetsFolder, YourGradientTemplatesFolder)
+
+-- Now use your custom presets just like built-in ones!
+local effect = EasyVisuals.new(textLabel, "YourCustomPreset", 0.5, 3)
+```
+
+**Template Structure:** ModuleScripts in your GradientTemplates folder must return a function that returns a UIGradient instance.
+
+**Preset Structure:** ModuleScripts in your Presets folder must return a function(uiInstance, speed, size, customColor, customTransparency) that returns a table with `Effects` and optionally `Connections`.

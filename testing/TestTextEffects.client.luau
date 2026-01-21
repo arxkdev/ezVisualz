@@ -31,6 +31,10 @@ local textEffect14 = EasyVisuals.new(MainUI.Texts.TextLabel14, "FireStroke", 0.5
 local textEffect15 = EasyVisuals.new(MainUI.Texts.TextLabel15, "Matrix", 0.5, 3);
 local textEffect16 = EasyVisuals.new(MainUI.Texts.TextLabel16, "Shine", 0.65, 3, false, Color3.fromRGB(187, 0, 255));
 local textEffect17 = EasyVisuals.new(MainUI.Texts.TextLabel17, "WaveStroke", 0.55, 6, false, Color3.fromRGB(0, 247, 255));
+local textEffect18 = EasyVisuals.new(MainUI.Texts.TextLabel18, "NeonStroke", 0.6, 5);
+local textEffect19 = EasyVisuals.new(MainUI.Texts.TextLabel19, "GalaxyStroke", 0.4, 4);
+local textEffect20 = EasyVisuals.new(MainUI.Texts.TextLabel20, "ElectricStroke", 0.5, 6);
+local textEffect21 = EasyVisuals.new(MainUI.Texts.TextLabel21, "SunsetStroke", 0.45, 5);
 
 local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardGui.TextLabel, "RainbowStroke", 0.4, 3);
 

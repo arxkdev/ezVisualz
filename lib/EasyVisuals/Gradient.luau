@@ -1,4 +1,5 @@
 local RunService = game:GetService("RunService");
+local SmartAssert = require(script.Parent.Util);
 
 type ColorSequenceKeypoints = typeof(ColorSequence.new(Color3.new()).Keypoints);
 type NumberSequenceKeypoints = typeof(NumberSequence.new(0).Keypoints);
@@ -113,15 +114,15 @@ local Gradient = {};
 Gradient.__index = Gradient;
 
 function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: ColorSequence, transparencySequence: number | NumberSequence): Gradient<T...>
-	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
-	assert(colorSequence, "ColorSequence not provided");
-	assert(transparencySequence, "TransparencySequence not provided")
-	assert(typeof(colorSequence) == "ColorSequence", "ColorSequence is not a ColorSequence");
-	assert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "NumberSequence", "TransparencySequence is not a number or NumberSequence");
-	assert(#colorSequence.Keypoints <= MAX_COLORSEQUENCE_KEYPOINTS, "ColorSequence has too many keypoints");
+	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
+	SmartAssert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
+	SmartAssert(colorSequence ~= nil, "ColorSequence not provided");
+	SmartAssert(transparencySequence ~= nil, "TransparencySequence not provided")
+	SmartAssert(typeof(colorSequence) == "ColorSequence", "ColorSequence is not a ColorSequence");
+	SmartAssert(typeof(transparencySequence) == "number" or typeof(transparencySequence) == "NumberSequence", "TransparencySequence is not a number or NumberSequence");
+	SmartAssert(#colorSequence.Keypoints <= MAX_COLORSEQUENCE_KEYPOINTS, "ColorSequence has too many keypoints");
 	if (typeof(transparencySequence) == "NumberSequence") then
-		assert(#transparencySequence.Keypoints <= MAX_NUMBERSEQUENCE_KEYPOINTS, "TransparencySequence has too many keypoints");
+		SmartAssert(#transparencySequence.Keypoints <= MAX_NUMBERSEQUENCE_KEYPOINTS, "TransparencySequence has too many keypoints");
 	end;
 
 	local self = {};
@@ -226,7 +227,7 @@ function Gradient.new<T...>(uiInstance: GuiObject | UIStroke, colorSequence: Col
 end
 
 function Gradient:SetColorSequence(sequence: ColorSequence, blendRate: number?): ColorSequence
-	assert(typeof(sequence) == "ColorSequence", "Sequence argument is nil or not a ColorSequence");
+	SmartAssert(typeof(sequence) == "ColorSequence", "Sequence argument is nil or not a ColorSequence");
 
 	self.ColorSequenceBlendRate = blendRate or 1;
 	self.ColorSequenceTarget = sequence;
@@ -237,8 +238,8 @@ end
 function Gradient:SetOffset(offset: number, acceleration: number?)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(offset) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(offset) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.OffsetTarget = offset;
 	self.OffsetSpeed = 0;
@@ -249,8 +250,8 @@ end
 function Gradient:SetOffsetSpeed(offset: number, acceleration: number?)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(offset) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(offset) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.OffsetSpeedTarget = offset;
 	self.OffsetTarget = nil;
@@ -260,8 +261,8 @@ end
 function Gradient:SetRotation(rotation: number, acceleration: number?)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(rotation) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(rotation) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.RotationTarget = rotation;
 	self.RotationSpeed = 0;
@@ -272,8 +273,8 @@ end
 function Gradient:SetRotationSpeed(rotation: number, acceleration: number?)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(rotation) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(rotation) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.RotationSpeedTarget = rotation;
 	self.RotationTarget = nil;
@@ -283,8 +284,8 @@ end
 function Gradient:SetTransparencyOffset(offset: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(offset) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(offset) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.TransparencyOffsetTarget = offset;
 	self.TransparencyOffsetSpeed = 0;
@@ -295,8 +296,8 @@ end
 function Gradient:SetTransparencyOffsetSpeed(offset: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(offset) == "number", "Offset isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(offset) == "number", "Offset isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.TransparencyOffsetSpeedTarget = offset;
 	self.TransparencyOffsetTarget = nil;
@@ -306,8 +307,8 @@ end
 function Gradient:SetTransparencySequence(transparency: number | NumberSequence, acceleration: number?)
 	-- Accepts a number or a NumberSequence as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(transparency, "Transparency is nil");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(transparency ~= nil, "Transparency is nil");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	if (typeof(transparency) == "number") then
 		self.TransparencyTarget = NumberSequence.new({NumberSequenceKeypoint.new(0, transparency), NumberSequenceKeypoint.new(1, transparency)});

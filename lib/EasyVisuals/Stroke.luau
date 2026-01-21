@@ -1,4 +1,5 @@
 local RunService = game:GetService("RunService");
+local SmartAssert = require(script.Parent.Util);
 
 -- Fingeroo was here ( ͡° ͜ʖ ͡°)
 
@@ -30,15 +31,15 @@ local Stroke = {};
 Stroke.__index = Stroke;
 
 function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color: Color3?, transparency: number?): Stroke<T...>
-	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
-	assert(size, "Size not provided");
-	assert(typeof(size) == "number", "Size is not a number");
+	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
+	SmartAssert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
+	SmartAssert(size ~= nil, "Size not provided");
+	SmartAssert(typeof(size) == "number", "Size is not a number");
 	if (color) then
-		assert(typeof(color) == "Color3", "Color is not a Color3");
+		SmartAssert(typeof(color) == "Color3", "Color is not a Color3");
 	end;
 	if (transparency) then
-		assert(typeof(transparency) == "number", "Transparency is not a number");
+		SmartAssert(typeof(transparency) == "number", "Transparency is not a number");
 	end;
 
 	local self = {};
@@ -92,8 +93,8 @@ end
 function Stroke:SetSize(size: number, acceleration: number)
 	-- Accepts a Vector2 as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(size) == "number", "Size isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(size) == "number", "Size isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.SizeTarget = size;
 	self.SizeAcceleration = math.clamp(acceleration, 0, 1);
@@ -102,8 +103,8 @@ end
 function Stroke:SetTransparency(transparency: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(transparency) == "number", "Transparency isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(transparency) == "number", "Transparency isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.TransparencyTarget = transparency;
 	self.TransparencyAcceleration = math.clamp(acceleration, 0, 1);
@@ -112,8 +113,8 @@ end
 function Stroke:SetColor(color: Color3, acceleration: number)
 	-- Accepts a Color3 as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(color) == "Color3", "Color isn't a Color3");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(color) == "Color3", "Color isn't a Color3");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.ColorTarget = color;
 	self.ColorAcceleration = math.clamp(acceleration, 0, 1);

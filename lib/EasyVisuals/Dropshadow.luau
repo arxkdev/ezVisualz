@@ -1,4 +1,5 @@
 local RunService = game:GetService("RunService");
+local SmartAssert = require(script.Parent.Util);
 
 export type Dropshadow<T...> = {
 	UIInstance: GuiObject,
@@ -28,16 +29,16 @@ local Dropshadow = {};
 Dropshadow.__index = Dropshadow;
 
 function Dropshadow.new<T...>(uiInstance: GuiObject | UIStroke, color: Color3?, transparency: number?, offset: Vector2?): Dropshadow<T...>
-	assert(uiInstance, "UIInstance not provided");
-	assert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
+	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
+	SmartAssert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
 	if (color) then
-		assert(typeof(color) == "Color3", "Color is not a Color3");
+		SmartAssert(typeof(color) == "Color3", "Color is not a Color3");
 	end;
 	if (transparency) then
-		assert(typeof(transparency) == "number", "Transparency is not a number");
+		SmartAssert(typeof(transparency) == "number", "Transparency is not a number");
 	end;
 	if (offset) then
-		assert(typeof(offset) == "Vector2", "Offset is not a Vector2");
+		SmartAssert(typeof(offset) == "Vector2", "Offset is not a Vector2");
 	end;
 
 	local self = {};
@@ -101,8 +102,8 @@ end
 function Dropshadow:SetOffset(offset: Vector2, acceleration: number)
 	-- Accepts a Vector2 as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(offset) == "Vector2", "Offset isn't a Vector2");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(offset) == "Vector2", "Offset isn't a Vector2");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.OffsetTarget = offset;
 	self.OffsetAcceleration = math.clamp(acceleration, 0, 1);
@@ -111,8 +112,8 @@ end
 function Dropshadow:SetTransparency(transparency: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(transparency) == "number", "Transparency isn't a number");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(transparency) == "number", "Transparency isn't a number");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.TransparencyTarget = transparency;
 	self.TransparencyAcceleration = math.clamp(acceleration, 0, 1);
@@ -121,8 +122,8 @@ end
 function Dropshadow:SetColor(color: Color3, acceleration: number)
 	-- Accepts a Color3 as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
-	assert(typeof(color) == "Color3", "Color isn't a Color3");
-	assert(typeof(acceleration) == "number", "Acceleration isn't a number");
+	SmartAssert(typeof(color) == "Color3", "Color isn't a Color3");
+	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
 
 	self.ColorTarget = color;
 	self.ColorAcceleration = math.clamp(acceleration, 0, 1);

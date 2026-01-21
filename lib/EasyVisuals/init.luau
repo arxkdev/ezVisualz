@@ -1,4 +1,8 @@
-local Presets = script.Presets;
+local DefaultPresets = script.Presets;
+local DefaultTemplates = script.GradientTemplates;
+
+-- Imports
+local SmartAssert = require(script.Util);
 
 export type Effect<T...> = {
 	UIInstance: GuiObject,
@@ -17,10 +21,16 @@ local Effect = {};
 Effect.Gradient = require(script.Gradient);
 Effect.Stroke = require(script.Stroke);
 Effect.Dropshadow = require(script.Dropshadow);
-Effect.Templates = require(script.GradientTemplates);
 
 Effect.__index = Effect;
 Effect.CurrentEffects = {};
+
+local CustomPresetsFolder: Folder? = nil;
+local CustomTemplatesFolder: Folder? = nil;
+
+-- Cached merged presets and templates
+local MergedPresets: { [string]: ModuleScript }? = nil;
+local MergedTemplates: { [string]: UIGradient }? = nil;
 
 local VisibleOrEnabledChart = {
 	["GuiObject"] = "Visible",
@@ -29,27 +39,153 @@ local VisibleOrEnabledChart = {
 	["SurfaceGui"] = "Enabled",
 };
 
-local function ValidateIsPreset(presetName: string): boolean
-	return Presets:FindFirstChild(presetName) ~= nil;
+local function _loadPresetsFromFolder(folder: Folder): { [string]: ModuleScript }
+	local presets = {};
+	for _, module in folder:GetDescendants() do
+		if module:IsA("ModuleScript") then
+			presets[module.Name] = module;
+		end;
+	end;
+	return presets;
 end
 
+local function _loadTemplatesFromFolder(folder: Folder): { [string]: UIGradient }
+	local templates = {};
+	for _, module in folder:GetDescendants() do
+		if module:IsA("ModuleScript") then
+			local templateFunction = require(module);
+			if typeof(templateFunction) == "function" then
+				templates[module.Name] = templateFunction();
+			end;
+		end;
+	end;
+	return templates;
+end
+
+local function _getMergedPresets(): { [string]: ModuleScript }
+	if MergedPresets then
+		return MergedPresets;
+	end;
+
+	local merged = {};
+
+	-- Load default presets first
+	for name, module in pairs(_loadPresetsFromFolder(DefaultPresets)) do
+		merged[name] = module;
+	end;
+
+	-- Override with custom presets if they exist
+	if CustomPresetsFolder then
+		for name, module in pairs(_loadPresetsFromFolder(CustomPresetsFolder)) do
+			merged[name] = module;
+		end;
+	end;
+
+	MergedPresets = merged;
+	return merged;
+end
+
+local function _getMergedTemplates(): { [string]: UIGradient }
+	if MergedTemplates then
+		return MergedTemplates;
+	end;
+
+	local merged = {};
+
+	-- Load default templates first
+	for name, template in pairs(_loadTemplatesFromFolder(DefaultTemplates)) do
+		merged[name] = template;
+	end;
+
+	-- Override with custom templates if they exist
+	if CustomTemplatesFolder then
+		for name, template in pairs(_loadTemplatesFromFolder(CustomTemplatesFolder)) do
+			merged[name] = template;
+		end;
+	end;
+
+	MergedTemplates = merged;
+	return merged;
+end
+
+local function _findPreset(presetName: string): ModuleScript?
+	local presets = _getMergedPresets();
+	return presets[presetName];
+end
+
+local function ValidateIsPreset(presetName: string): boolean
+	return _findPreset(presetName) ~= nil;
+end
+
+--[[
+	Function to set custom folders for presets and templates.
+	This allows users to add their own presets/templates without forking the module.
+
+	Custom presets/templates will override default ones with the same name.
+
+	Example usage:
+		local EasyVisuals = require(path.to.EasyVisuals)
+
+		-- Create custom folders in your game
+		local CustomPresets = Instance.new("Folder")
+		CustomPresets.Name = "CustomPresets"
+		CustomPresets.Parent = workspace -- or wherever you want
+
+		local CustomTemplates = Instance.new("Folder")
+		CustomTemplates.Name = "CustomTemplates"
+		CustomTemplates.Parent = workspace
+
+		-- Add your custom preset modules to CustomPresets folder
+		-- Add your custom template modules to CustomTemplates folder
+
+		-- Hook up the custom folders
+		EasyVisuals.SetCustomFolders(CustomPresets, CustomTemplates)
+
+		-- Now you can use your custom presets!
+		local effect = EasyVisuals.new(textLabel, "MyCustomPreset", 0.5, 3)
+
+	@param customPresets Folder? - Optional folder containing custom preset ModuleScripts
+	@param customTemplates Folder? - Optional folder containing custom template ModuleScripts
+]]
+function Effect.SetCustomFolders(customPresets: Folder?, customTemplates: Folder?)
+	if customPresets then
+		SmartAssert(customPresets:IsA("Folder"), "customPresets must be a Folder");
+	end;
+	if customTemplates then
+		SmartAssert(customTemplates:IsA("Folder"), "customTemplates must be a Folder");
+	end;
+
+	CustomPresetsFolder = customPresets;
+	CustomTemplatesFolder = customTemplates;
+
+	-- Clear cache to force reload
+	MergedPresets = nil;
+	MergedTemplates = nil;
+
+	-- Reload templates in the Effect module
+	Effect.Templates = _getMergedTemplates();
+end
+
+-- Initialize templates
+Effect.Templates = _getMergedTemplates();
+
 function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?): Effect<T...>
-	assert(uiInstance, "UIInstance not provided");
-	assert(effectType, "EffectType not provided");
-	assert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
-	assert(typeof(effectType) == "string", "effectType is not a string");
-	assert(ValidateIsPreset(effectType), "effectType is not a valid preset");
+	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
+	SmartAssert(effectType ~= nil, "EffectType not provided");
+	SmartAssert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
+	SmartAssert(typeof(effectType) == "string", "effectType is not a string");
+	SmartAssert(ValidateIsPreset(effectType), "effectType is not a valid preset");
 	if (speed) then
-		assert(typeof(speed) == "number", "speed is not a number");
+		SmartAssert(typeof(speed) == "number", "speed is not a number");
 	end;
 	if (size) then
-		assert(typeof(size) == "number", "size is not a number");
+		SmartAssert(typeof(size) == "number", "size is not a number");
 	end;
 	if (customColor) then
-		assert(typeof(customColor) == "ColorSequence" or typeof(customColor) == "Color3", "customColor is not a ColorSequence or Color3");
+		SmartAssert(typeof(customColor) == "ColorSequence" or typeof(customColor) == "Color3", "customColor is not a ColorSequence or Color3");
 	end;
 	if (customTransparency) then
-		assert(typeof(customTransparency) == "NumberSequence" or typeof(customTransparency) == "number", "customTransparency is not a NumberSequence or number");
+		SmartAssert(typeof(customTransparency) == "NumberSequence" or typeof(customTransparency) == "number", "customTransparency is not a NumberSequence or number");
 	end;
 
 	local self = {};
@@ -107,7 +243,9 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 		end;
 	end;
 
-	local Preset = require(Presets:FindFirstChild(effectType));
+	local PresetModule = _findPreset(effectType);
+	SmartAssert(PresetModule ~= nil, "Preset '" .. effectType .. "' not found");
+	local Preset = require(PresetModule);
 	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency);
 
 	if (Objects["Connections"]) then
