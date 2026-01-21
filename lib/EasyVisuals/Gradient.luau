@@ -42,12 +42,12 @@ export type Gradient<T...> = {
 	Pause: (self: Gradient<T...>) -> nil,
 	Resume: (self: Gradient<T...>) -> nil,
 	SetColorSequence: (self: Gradient<T...>, sequence: ColorSequence, blendRate: number?) -> ColorSequence,
-	SetOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
-	SetOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
-	SetRotation: (self: Gradient<T...>, rotation: number, acceleration: number?) -> nil,
-	SetRotationSpeed: (self: Gradient<T...>, rotation: number, acceleration: number?) -> nil,
-	SetTransparencyOffset: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
-	SetTransparencyOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number?) -> nil,
+	SetOffset: (self: Gradient<T...>, offset: number, acceleration: number) -> nil,
+	SetOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number) -> nil,
+	SetRotation: (self: Gradient<T...>, rotation: number, acceleration: number) -> nil,
+	SetRotationSpeed: (self: Gradient<T...>, rotation: number, acceleration: number) -> nil,
+	SetTransparencyOffset: (self: Gradient<T...>, offset: number, acceleration: number) -> nil,
+	SetTransparencyOffsetSpeed: (self: Gradient<T...>, offset: number, acceleration: number) -> nil,
 	SetTransparencySequence: (self: Gradient<T...>, transparency: number | NumberSequence, acceleration: number?) -> nil,
 	EqualizeColorSequenceKeypoints: (self: Gradient<T...>) -> nil,
 	EqualizeTransparencySequenceKeypoints: (self: Gradient<T...>) -> nil,
@@ -247,7 +247,7 @@ function Gradient:SetOffset(offset: number, acceleration: number?)
 	self.OffsetAcceleration = math.clamp(acceleration, 0, 1);
 end
 
-function Gradient:SetOffsetSpeed(offset: number, acceleration: number?)
+function Gradient:SetOffsetSpeed(offset: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
 	SmartAssert(typeof(offset) == "number", "Offset isn't a number");
@@ -258,7 +258,7 @@ function Gradient:SetOffsetSpeed(offset: number, acceleration: number?)
 	self.OffsetAcceleration = math.clamp(acceleration, 0, 1);
 end
 
-function Gradient:SetRotation(rotation: number, acceleration: number?)
+function Gradient:SetRotation(rotation: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
 	SmartAssert(typeof(rotation) == "number", "Offset isn't a number");
@@ -270,7 +270,7 @@ function Gradient:SetRotation(rotation: number, acceleration: number?)
 	self.RotationAcceleration = math.clamp(acceleration, 0, 1);
 end
 
-function Gradient:SetRotationSpeed(rotation: number, acceleration: number?)
+function Gradient:SetRotationSpeed(rotation: number, acceleration: number)
 	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
 	SmartAssert(typeof(rotation) == "number", "Offset isn't a number");
@@ -304,7 +304,7 @@ function Gradient:SetTransparencyOffsetSpeed(offset: number, acceleration: numbe
 	self.TransparencyOffsetAcceleration = math.clamp(acceleration, 0, 1);
 end
 
-function Gradient:SetTransparencySequence(transparency: number | NumberSequence, acceleration: number?)
+function Gradient:SetTransparencySequence(transparency: number | NumberSequence, acceleration: number)
 	-- Accepts a number or a NumberSequence as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
 	SmartAssert(transparency ~= nil, "Transparency is nil");
