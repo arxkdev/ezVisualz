@@ -12,7 +12,10 @@ return function(uiInstance: GuiObject, speed: number, size: number, customColor:
     strokeGradient:SetRotation(-45, 1);
 	strokeGradient:SetOffsetSpeed(speed * 0.9, 1);
 
-	local Scale = size * 3;
+	local variationPercent = 0.25;
+	local minMultiplier = 0.5;
+	local maxMultiplier = 3 + variationPercent;
+
 	local Connection;
 	Connection = RunService.Heartbeat:Connect(function()
 		if (not mainStroke.Instance or mainStroke.Instance.Parent == nil) then
@@ -21,8 +24,9 @@ return function(uiInstance: GuiObject, speed: number, size: number, customColor:
 		end;
 
 		local t = tick() * speed;
-		local sizeMultiplier = 1 + Scale * math.sin(t);
-		mainStroke:SetSize(size * sizeMultiplier, 0.055);
+		local normalizedWave = (math.sin(t) + 1) / 2;
+		local sizeMultiplier = minMultiplier + (maxMultiplier - minMultiplier) * normalizedWave;
+		mainStroke:SetSize(size * sizeMultiplier, 0.15);
 	end);
 
 	return {

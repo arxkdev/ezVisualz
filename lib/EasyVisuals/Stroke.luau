@@ -7,6 +7,7 @@ export type Stroke<T...> = {
 	UIInstance: GuiObject,
 	Instance: UIStroke,
 	IsPaused: boolean,
+	UseScaledSize: boolean,
 	Color: Color3,
 	ColorTarget: Color3,
 	ColorAcceleration: number,
@@ -50,6 +51,7 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 
 	self.UIInstance = uiInstance;
 	self.Instance = uiInstance:FindFirstChildWhichIsA("UIStroke") or Instance.new("UIStroke");
+	self.UseScaledSize = useScaledSize == true;
 	if (useScaledSize == true) then
 		self.Instance.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize;
 	end;
@@ -62,6 +64,10 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 	self.Transparency = transparency or 0;
 	self.TransparencyTarget = transparency or 0;
 	self.TransparencyAcceleration = 1;
+
+	if self.UseScaledSize and math.abs(size) > 1 then
+		size = size / 100;
+	end
 
 	self.Size = size;
 	self.SizeTarget = size;
@@ -85,9 +91,9 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 			return;
 		end;
 
-		self.Color = self.Color:Lerp(self.ColorTarget, self.ColorAcceleration * dt);
-		self.Size = self.Size + ((self.SizeTarget - self.Size) * self.SizeAcceleration * dt);
-		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration * dt);
+		self.Color = self.Color:Lerp(self.ColorTarget, self.ColorAcceleration * dt * 10);
+		self.Size = self.Size + ((self.SizeTarget - self.Size) * self.SizeAcceleration * dt * 10);
+		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration * dt * 10);
 
 		self.Instance.Transparency = self.Transparency;
 		self.Instance.Color = self.Color;
@@ -98,10 +104,15 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 end
 
 function Stroke:SetSize(size: number, acceleration: number)
-	-- Accepts a Vector2 as the first argument and a number as the second argument.
+	-- Accepts a number as the first argument and a number as the second argument.
 	-- Values below 0 or above 1 for the acceleration argument do not make sense.
 	SmartAssert(typeof(size) == "number", "Size isn't a number");
 	SmartAssert(typeof(acceleration) == "number", "Acceleration isn't a number");
+
+	-- What I thought of doing here is when someone uses ScaledSize and they pass a number greater than 1, we divide it by 100 to get the percentage.
+	if self.UseScaledSize and math.abs(size) > 1 then
+		size = size / 100;
+	end
 
 	self.SizeTarget = size;
 	self.SizeAcceleration = math.clamp(acceleration, 0, 1);
