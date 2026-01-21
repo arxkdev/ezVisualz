@@ -169,7 +169,7 @@ end
 -- Initialize templates
 Effect.Templates = _getMergedTemplates();
 
-function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?): Effect<T...>
+function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: number?, size: number?, saveInstanceObjects: boolean?, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, resumesOnVisible: boolean?, useScaledSize: boolean?): Effect<T...>
 	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
 	SmartAssert(effectType ~= nil, "EffectType not provided");
 	SmartAssert(uiInstance:IsA("GuiObject"), "UIInstance is not a GuiObject");
@@ -186,6 +186,9 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	end;
 	if (customTransparency) then
 		SmartAssert(typeof(customTransparency) == "NumberSequence" or typeof(customTransparency) == "number", "customTransparency is not a NumberSequence or number");
+	end;
+	if (useScaledSize ~= nil) then
+		SmartAssert(typeof(useScaledSize) == "boolean", "useScaledSize is not a boolean");
 	end;
 
 	local self = {};
@@ -246,7 +249,7 @@ function Effect.new<T...>(uiInstance: GuiObject, effectType: string, speed: numb
 	local PresetModule = _findPreset(effectType);
 	SmartAssert(PresetModule ~= nil, "Preset '" .. effectType .. "' not found");
 	local Preset = require(PresetModule);
-	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency);
+	local Objects = Preset(uiInstance, self.Speed, self.Size, customColor, customTransparency, useScaledSize);
 
 	if (Objects["Connections"]) then
 		for _, Connection in Objects["Connections"] do

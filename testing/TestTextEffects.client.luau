@@ -36,6 +36,9 @@ local textEffect19 = EasyVisuals.new(MainUI.Texts.TextLabel19, "GalaxyStroke", 0
 local textEffect20 = EasyVisuals.new(MainUI.Texts.TextLabel20, "ElectricStroke", 0.5, 6);
 local textEffect21 = EasyVisuals.new(MainUI.Texts.TextLabel21, "SunsetStroke", 0.45, 5);
 
+-- Relative to parent (ui stroke scaled update)
+local textEffectRelativeToParent = EasyVisuals.new(MainUI.RelativeToParent.TextLabel, "RainbowStroke", 0.5, 6, true, nil, nil, nil, true);
+
 local textEffectBillboard = EasyVisuals.new(workspace.Part.Attachment.BillboardGui.TextLabel, "RainbowStroke", 0.4, 3);
 
 task.delay(5, function()

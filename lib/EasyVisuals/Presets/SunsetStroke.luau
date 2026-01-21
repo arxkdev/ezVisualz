@@ -2,12 +2,12 @@ local RunService = game:GetService("RunService");
 
 local TextEffects = require(script.Parent.Parent);
 
-return function(uiInstance: GuiObject, speed: number, size: number)
+return function(uiInstance: GuiObject, speed: number, size: number, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, useScaledSize: boolean?)
     local mainGradient = TextEffects.Gradient.new(uiInstance, TextEffects.Templates.Sunset.Color, 0);
     mainGradient:SetRotation(-60, 1);
     mainGradient:SetOffsetSpeed(speed * 0.8, 1);
 
-    local mainStroke = TextEffects.Stroke.new(uiInstance, size);
+    local mainStroke = TextEffects.Stroke.new(uiInstance, size, nil, nil, useScaledSize);
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Sunset.Color, 0);
     strokeGradient:SetRotation(60, 1);
     strokeGradient:SetOffsetSpeed(-speed * 0.6, 1);

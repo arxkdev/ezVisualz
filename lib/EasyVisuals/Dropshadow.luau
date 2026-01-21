@@ -81,9 +81,9 @@ function Dropshadow.new<T...>(uiInstance: GuiObject | UIStroke, color: Color3?, 
 			return;
 		end;
 
-		self.Color = self.Color:Lerp(self.ColorTarget, self.ColorAcceleration);
-		self.Offset = self.Offset:Lerp(self.OffsetTarget, self.OffsetAcceleration);
-		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration);
+		self.Color = self.Color:Lerp(self.ColorTarget, math.min(1, self.ColorAcceleration * dt));
+		self.Offset = self.Offset:Lerp(self.OffsetTarget, math.min(1, self.OffsetAcceleration * dt));
+		self.Transparency = self.Transparency + ((self.TransparencyTarget - self.Transparency) * self.TransparencyAcceleration * dt);
 
 		self.Instance.Position = UDim2.new(0, self.Offset.X, 0, self.Offset.Y);
 

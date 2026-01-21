@@ -26,13 +26,18 @@ local function findColorFromObject(uiInstance: GuiObject): Color3
     return Color3.fromRGB(255, 255, 255);
 end
 
-return function(uiInstance: GuiObject, speed: number, size: number, customColor: Color3)
-    customColor = customColor or findColorFromObject(uiInstance);
+return function(uiInstance: GuiObject, speed: number, size: number, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, useScaledSize: boolean?)
+    local actualColor = customColor;
+    if typeof(customColor) == "ColorSequence" then
+        -- Extract first color from ColorSequence if needed
+        actualColor = customColor.Keypoints[1].Value;
+    end;
+    actualColor = actualColor or findColorFromObject(uiInstance);
 
     -- We're not going to use a GradientTemplate because this requires us to do some things with the customColor
-    local color1 = customColor;
-    local color2 = makeLighter(customColor, 0.6);
-    local color3 = customColor;
+    local color1 = actualColor;
+    local color2 = makeLighter(actualColor, 0.6);
+    local color3 = actualColor;
 
     local colorSequenceForShine = ColorSequence.new({
         ColorSequenceKeypoint.new(0, color1),
@@ -40,7 +45,7 @@ return function(uiInstance: GuiObject, speed: number, size: number, customColor:
         ColorSequenceKeypoint.new(1, color3)
 	});
 		
-	local mainStroke = TextEffects.Stroke.new(uiInstance, size);
+	local mainStroke = TextEffects.Stroke.new(uiInstance, size, nil, nil, useScaledSize);
 	local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, colorSequenceForShine, 0);
 	local Rotation = 0.75;
 	

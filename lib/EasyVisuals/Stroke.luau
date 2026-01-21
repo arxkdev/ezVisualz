@@ -24,13 +24,14 @@ export type Stroke<T...> = {
 	SetSize: (self: Stroke<T...>, size: number, acceleration: number) -> nil,
 	SetTransparency: (self: Stroke<T...>, transparency: number, acceleration: number) -> nil,
 	SetColor: (self: Stroke<T...>, color: Color3, acceleration: number) -> nil,
+	SetScaledSize: (self: Stroke<T...>, useScaledSize: boolean) -> nil,
 	Destroy: (self: Stroke<T...>) -> nil,
 };
 
 local Stroke = {};
 Stroke.__index = Stroke;
 
-function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color: Color3?, transparency: number?): Stroke<T...>
+function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color: Color3?, transparency: number?, useScaledSize: boolean?): Stroke<T...>
 	SmartAssert(uiInstance ~= nil, "UIInstance not provided");
 	SmartAssert(uiInstance:IsA("GuiObject") or uiInstance:IsA("UIStroke"), "UIInstance is not a GuiObject or UIStroke");
 	SmartAssert(size ~= nil, "Size not provided");
@@ -41,11 +42,17 @@ function Stroke.new<T...>(uiInstance: GuiObject | UIStroke, size: number, color:
 	if (transparency) then
 		SmartAssert(typeof(transparency) == "number", "Transparency is not a number");
 	end;
+	if (useScaledSize ~= nil) then
+		SmartAssert(typeof(useScaledSize) == "boolean", "useScaledSize is not a boolean");
+	end;
 
 	local self = {};
 
 	self.UIInstance = uiInstance;
 	self.Instance = uiInstance:FindFirstChildWhichIsA("UIStroke") or Instance.new("UIStroke");
+	if (useScaledSize == true) then
+		self.Instance.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize;
+	end;
 	self.IsPaused = false;
 
 	self.Color = color or Color3.new(1, 1, 1);
@@ -118,6 +125,16 @@ function Stroke:SetColor(color: Color3, acceleration: number)
 
 	self.ColorTarget = color;
 	self.ColorAcceleration = math.clamp(acceleration, 0, 1);
+end
+
+function Stroke:SetScaledSize(useScaledSize: boolean)
+	SmartAssert(typeof(useScaledSize) == "boolean", "useScaledSize isn't a boolean");
+
+	if (useScaledSize) then
+		self.Instance.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize;
+	else
+		self.Instance.StrokeSizingMode = Enum.StrokeSizingMode.FixedSize;
+	end;
 end
 
 function Stroke:Pause()

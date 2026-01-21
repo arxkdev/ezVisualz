@@ -1,11 +1,11 @@
 local TextEffects = require(script.Parent.Parent);
 
-return function(uiInstance: GuiObject, speed: number, size: number)
+return function(uiInstance: GuiObject, speed: number, size: number, customColor: ColorSequence | Color3?, customTransparency: NumberSequence | number?, useScaledSize: boolean?)
     local mainGradient = TextEffects.Gradient.new(uiInstance, TextEffects.Templates.Matrix.Color, 0);
     mainGradient:SetOffsetSpeed(speed, 1);
     mainGradient:SetRotation(90, 1);
 
-    local mainStroke = TextEffects.Stroke.new(uiInstance, size);
+    local mainStroke = TextEffects.Stroke.new(uiInstance, size, nil, nil, useScaledSize);
 
     local strokeGradient = TextEffects.Gradient.new(mainStroke.Instance, TextEffects.Templates.Matrix.Color, 0);
     strokeGradient:SetOffset(0.5, 1);

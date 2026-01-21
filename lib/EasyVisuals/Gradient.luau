@@ -327,7 +327,7 @@ function Gradient:EqualizeColorSequenceKeypoints()
 	local newkeypoints = {};
 
 	if (#keypointsA ~= #keypointsB) then
-		for i, v in keypointsA do
+		for _, v in keypointsA do
 			local new = ColorSequenceKeypoint.new(v.Time, evalColorSequence(keypointsB, v.Time));
 			table.insert(newkeypoints, new);
 		end;
@@ -349,7 +349,7 @@ function Gradient:EqualizeTransparencySequenceKeypoints()
 	local newkeypoints = {};
 
 	if (#keypointsA ~= #keypointsB) then
-		for i, v in keypointsA do
+		for _, v in keypointsA do
 			local new = NumberSequenceKeypoint.new(v.Time, evalNumberSequence(keypointsB, v.Time));
 			table.insert(newkeypoints, new);
 		end;
@@ -362,33 +362,19 @@ function Gradient:EqualizeTransparencySequenceKeypoints()
 		end;
 	end;
 
-	print(newkeypoints[1].Value, newkeypoints[2].Value, newkeypoints[3].Value, newkeypoints[4].Value, newkeypoints[5].Value)
 	self.TransparencySequence = NumberSequence.new(newkeypoints);
 end
 
 function Gradient:CalculateTrueColorSequence()
-	local temp = {};
-	local lowestKeypointIndex = 5;
-	local lowestTime = 100;
+	local keypoints = {};
 
-	for _, v in self.ColorSequence.Keypoints do
+	-- Build keypoints array directly
+	for i, v in ipairs(self.ColorSequence.Keypoints) do
 		local evaledTime = (v.Time + self.Offset);
 		if (evaledTime > 1 or evaledTime < 0) then
 			evaledTime = evaledTime % 1;
 		end;
-		local newKeypoint = ColorSequenceKeypoint.new(evaledTime, v.Value);
-		if (newKeypoint.Time <= lowestTime) then
-			temp[lowestKeypointIndex - 1] = newKeypoint;
-			lowestKeypointIndex = lowestKeypointIndex - 1;
-			lowestTime = newKeypoint.Time;
-		else
-			temp[#temp + 1] = newKeypoint;
-		end;
-	end;
-
-	local keypoints = {};
-	for i,v in temp do
-		table.insert(keypoints, v);
+		keypoints[i] = ColorSequenceKeypoint.new(evaledTime, v.Value);
 	end;
 
 	table.sort(keypoints, function(a, b)
@@ -417,28 +403,15 @@ function Gradient:CalculateTrueTransparencySequence()
 		end;
 	end;
 
-	local temp = {};
-	local lowestKeypointIndex = #self.TransparencySequence.Keypoints + 1;
-	local lowestTime = math.huge;
+	local keypoints = {};
 
-	for _, v in self.TransparencySequence.Keypoints do
+	-- Build keypoints array directly
+	for i, v in ipairs(self.TransparencySequence.Keypoints) do
 		local evaledTime = (v.Time + self.TransparencyOffset);
 		if (evaledTime > 1 or evaledTime < 0) then
 			evaledTime = evaledTime % 1;
 		end;
-		local newKeypoint = NumberSequenceKeypoint.new(evaledTime, v.Value);
-		if (newKeypoint.Time <= lowestTime) then
-			temp[lowestKeypointIndex - 1] = newKeypoint;
-			lowestKeypointIndex = lowestKeypointIndex - 1;
-			lowestTime = newKeypoint.Time;
-		else
-			temp[#temp + 1] = newKeypoint;
-		end;
-	end;
-
-	local keypoints = {};
-	for _, v in temp do
-		table.insert(keypoints, v);
+		keypoints[i] = NumberSequenceKeypoint.new(evaledTime, v.Value);
 	end;
 
 	table.sort(keypoints, function(a, b)
